@@ -28,7 +28,7 @@ def search_type():
 
                 # Main Recipe Title to the page <### Don't Need Anymore ###>
                 main_title = soup.find(class_="recipe-summary__h1").get_text().replace('\n','')
-                json_dict['recipes'] = {main_title: {}}
+                json_dict['recipes'].update({main_title: {}})
 
                 # All ingredients listed and looped over with only text
                 # removed add all ingredients button text
@@ -38,7 +38,7 @@ def search_type():
                     ingredients_cleaned = ingredients.get_text().replace('\n', '')
                     if ingredients_cleaned != "Add all ingredients to list" and ingredients_cleaned != '':
                         ingredients_list.append(ingredients_cleaned)
-                        json_dict['recipes'][main_title]['ingredients'] = ingredients_list
+                        json_dict['recipes'][main_title].update({'ingredients':ingredients_list})
 
                 # Collect and display recipe directions text.
                 directions_list = []
@@ -47,14 +47,14 @@ def search_type():
                     directions_cleaned = dir.get_text().replace('\n','')
                     if directions_cleaned != '':
                         directions_list.append(directions_cleaned)
-                        json_dict['recipes'][main_title]['directions'] = directions_list
+                        json_dict['recipes'][main_title].update({'directions':directions_list})
                 preptime_list = []
                 # Collect specific prep,cook and ready time from directions.
                 prep_time = soup.findAll("li", attrs={"aria-label":True, "class":"prepTime__item"})
                 #print(directions)
                 for steps in prep_time:
                     preptime_list.append(steps["aria-label"])
-                    json_dict['recipes'][main_title]['prep_time'] = preptime_list
+                    json_dict['recipes'][main_title].update({'prep_time':preptime_list})
             print(json.dumps(json_dict, indent=4, sort_keys=True))
     else:
         search_term = input("What are you looking to cook?: ")
@@ -69,21 +69,33 @@ def search_type():
 
             # Main Recipe Title to the page <### Don't Need Anymore ###>
             main_title = soup.find(class_="recipe-summary__h1").get_text().replace('\n','')
-            print("Recipe: {}".format(main_title))
+            json_dict['recipes'] = {main_title: {}}
 
             # All ingredients listed and looped over with only text
             # removed add all ingredients button text
-            ingredients_list = soup.findAll(class_="recipe-ingred_txt")
-            for ingredients in ingredients_list:
-                cleaned = ingredients.get_text().replace('\n', '')
-                if cleaned != "Add all ingredients to list":
-                    print(cleaned)
+            ingredients_list = []
+            ingredients_scrape = soup.findAll(class_="recipe-ingred_txt")
+            for ingredients in ingredients_scrape:
+                ingredients_cleaned = ingredients.get_text().replace('\n', '')
+                if ingredients_cleaned != "Add all ingredients to list" and ingredients_cleaned != '':
+                    ingredients_list.append(ingredients_cleaned)
+                    json_dict['recipes'][main_title]['ingredients'] = ingredients_list
 
+            # Collect and display recipe directions text.
+            directions_list = []
+            directions = soup.findAll("span", class_="recipe-directions__list--item")
+            for dir in directions:
+                directions_cleaned = dir.get_text().replace('\n','')
+                if directions_cleaned != '':
+                    directions_list.append(directions_cleaned)
+                    json_dict['recipes'][main_title]['directions'] = directions_list
+            preptime_list = []
             # Collect specific prep,cook and ready time from directions.
-            directions = soup.findAll("li", attrs={"aria-label":True, "class":"prepTime__item"})
+            prep_time = soup.findAll("li", attrs={"aria-label":True, "class":"prepTime__item"})
             #print(directions)
-            for steps in directions:
-                #print(steps.get_text().replace('\n',''))
-                print(steps["aria-label"]+"\n")
+            for steps in prep_time:
+                preptime_list.append(steps["aria-label"])
+                json_dict['recipes'][main_title]['prep_time'] = preptime_list
+        print(json.dumps(json_dict, indent=4, sort_keys=True))
 
 search_type()
