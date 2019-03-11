@@ -6,3 +6,4 @@ jsondiff==1.1.2
 PyYAML==3.12
 pysqlite==2.8.3
 requests==2.21.0
+virtualenv==16.4.3
