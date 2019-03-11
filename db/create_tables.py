@@ -30,6 +30,7 @@ create_table_recipes = (
             "url text,"
             "prep_time text,"
             "cook_time text,"
+            "tags text,"
             "FOREIGN KEY(chef_id) REFERENCES users(id)"
             ");"
         )
