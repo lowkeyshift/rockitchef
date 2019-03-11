@@ -29,7 +29,7 @@ echo "Starting PIP installs for rockitchef."
 echo "====================================="
 
 # Installing Python 3 and dependancies
-PY_ARRAY=(python3.6 python3-pip python3-venv)
+PY_ARRAY=(python3.6 python3-pip python3-venv sqlite3)  
 for package in "${PY_ARRAY[@]}"; do
     if command -v $package &>/dev/null; then
         echo $package " is installed"
