@@ -26,7 +26,7 @@ create_table_recipes = (
             "CREATE TABLE recipes("
             "id integer primary key autoincrement,"
             "chef_id integer,"
-            "title text",
+            "title text,",
             "url text,"
             "prep_time text,"
             "cook_time text,"
