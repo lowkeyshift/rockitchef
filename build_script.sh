@@ -3,6 +3,9 @@
 vDir="./rockitchef/"
 readonly sourceFile="webapp"
 FILE="./requirements.txt"
+echo "Enter Datadog API KEY: "
+read DD_API_KEY
+export DD_API_KEY=${DD_API_KEY}
 # Check to make sure things are up to date.
 echo "====================================="
 echo "Updating Ubuntu"
@@ -56,9 +59,9 @@ echo "\n"
 echo "====================================="
 echo "Install Datadog."
 echo "====================================="
-export DD_API_KEY=094836a9dbf0f88f010fc33f3e087f3f
 bash -c "$(curl -L https://raw.githubusercontent.com/DataDog/datadog-agent/master/cmd/agent/install_script.sh)"
 sudo systemctl start datadog-agent
 echo "====================================="
 echo "Starting Datadog."
 echo "====================================="
+
