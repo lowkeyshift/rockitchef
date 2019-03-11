@@ -37,8 +37,11 @@ def crawl_page(url):
     cook_time_element = rsoup.select('time[itemprop="cookTime"]')
     cook_time = 0 if len(cook_time_element) == 0 else cook_time_element[0].text
 
+    tags_lambda =lambda x: x and x.startswith(('toggle-similar__title'))
+    tags = [x.text.replace('\n','').strip() for x in rsoup.findAll('span', class_=tags_lambda) if 'Recipe' not in x.text and 'Home' not in x.text]
+
     with conn:
-        c.execute("INSERT INTO recipes (title, chef_id, url, prep_time, cook_time) VALUES (?,?,?,?,?)",(recipe_title,recipe_author_id,url, prep_time, cook_time))
+        c.execute("INSERT INTO recipes (title, chef_id, url, prep_time, cook_time, tags) VALUES (?,?,?,?,?,?)",(recipe_title,recipe_author_id,url, prep_time, cook_time,','.join(tags)))
     recipe_id = c.lastrowid
     
     directions = [direction.text for direction in rsoup.findAll('span', class_='recipe-directions__list--item')]

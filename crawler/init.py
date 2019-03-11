@@ -1,5 +1,5 @@
 import sqlite3
-conn = sqlite3.connect('/rockit/rockit.db')
+conn = sqlite3.connect('/rockit.db')
 c = conn.cursor()
 
 # Crawled table
