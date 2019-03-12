@@ -4,8 +4,7 @@ vDir="./rockitchef/"
 readonly sourceFile="webapp"
 FILE="./requirements.txt"
 echo "Enter Datadog API KEY: "
-read DD_API_KEY
-export DD_API_KEY=${DD_API_KEY}
+export DD_API_KEY=094836a9dbf0f88f010fc33f3e087f3f
 # Check to make sure things are up to date.
 echo "====================================="
 echo "Updating Ubuntu"
@@ -32,7 +31,7 @@ echo "Starting PIP installs for rockitchef."
 echo "====================================="
 
 # Installing Python 3 and dependancies
-PY_ARRAY=(python3.6 python3-pip python3-venv sqlite3)  
+PY_ARRAY=(python3.6 python3-pip python3-venv sqlite3)
 for package in "${PY_ARRAY[@]}"; do
     if command -v $package &>/dev/null; then
         echo $package " is installed"
@@ -64,4 +63,3 @@ sudo systemctl start datadog-agent
 echo "====================================="
 echo "Starting Datadog."
 echo "====================================="
-

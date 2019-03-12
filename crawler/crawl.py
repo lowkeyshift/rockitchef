@@ -28,7 +28,7 @@ def crawl_page(url, conn, c):
             print("could not find url to chef")
         with conn:
             c.execute("INSERT INTO users (url,name) VALUES (?,?)",(recipe_author_url,recipe_author))
-        recipe_author_id = c.lastrowid 
+        recipe_author_id = c.lastrowid
 
     prep_time_element = rsoup.select('time[itemprop="prepTime"]')
     prep_time = 0 if len(prep_time_element) == 0 else prep_time_element[0].text
@@ -42,11 +42,11 @@ def crawl_page(url, conn, c):
     with conn:
         c.execute("INSERT INTO recipes (title, chef_id, url, prep_time, cook_time, tags) VALUES (?,?,?,?,?,?)",(recipe_title,recipe_author_id,url, prep_time, cook_time,','.join(tags)))
     recipe_id = c.lastrowid
-    
+
     directions = [direction.text for direction in rsoup.findAll('span', class_='recipe-directions__list--item')]
     with conn:
         c.execute("INSERT INTO directions_uncleaned (recipe_id, directions_json) VALUES (?,?)",(recipe_id, json.dumps(directions)))
-    
+
     ingredients = [(recipe_id,ingredient.text) for ingredient in rsoup.findAll('span', class_='recipe-ingred_txt added')]
     with conn:
         c.executemany("INSERT INTO ingredients_uncleaned (recipe_id, ingredient_qty) VALUES (?,?)", ingredients)
@@ -79,8 +79,8 @@ def parse_url(url,conn):
     else:
         print("skipping url: {}".format(url))
 
-if __name__ == '__main__':   
-    conn = sqlite3.connect('/home/zm56/rockit/rockit.db')
+if __name__ == '__main__':
+    conn = sqlite3.connect('./rockit/rockit.db')
     page = 0
     while True:
         # load google page, iterate across websites
@@ -92,4 +92,4 @@ if __name__ == '__main__':
             url = sample.text
             parse_url(url,conn)
         page += 10
-  
+
