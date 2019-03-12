@@ -4,7 +4,8 @@ vDir="./rockitchef/"
 readonly sourceFile="webapp"
 FILE="./requirements.txt"
 echo "Enter Datadog API KEY: "
-export DD_API_KEY=094836a9dbf0f88f010fc33f3e087f3f
+read DD_API_KEY
+export DD_API_KEY=${DD_API_KEY}
 # Check to make sure things are up to date.
 echo "====================================="
 echo "Updating Ubuntu"
