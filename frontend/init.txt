@@ -1,0 +1,15 @@
+ yarn global add live-server
+
+ yarn global add babel-cli@6.24.1
+
+ yarn init
+
+
+
+ -----
+
+ babel src/app.js --out-file=public/scripts/app.js --presets=env,react --watch
+ # edit around app.js written in ES5/6 and see it reflected in public scripts
+
+ live-server public
+ #uses live-server to host something on localhost:8080 using contents of public folder
