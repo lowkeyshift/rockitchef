@@ -1,7 +1,9 @@
- yarn global add live-server
-
- yarn global add babel-cli@6.24.1
-
+# to set up dev env
+# you need to install yarn somehow
+# then running yarn init should reference package.json and load you the relevent tools
+# right now its
+# live-server : so you can access app via localhost:8080
+# babel-cli : so you can convert JSX code to js
  yarn init
 
 

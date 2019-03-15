@@ -3,8 +3,8 @@ class InfoTabPage extends React.Component {
 		super(props);
 		this.state = {
 			value: '',
-			ingredients: ['happy','panda'],
-			recommendations: ['url1','url2']
+			ingredients: ['eggs','bacon','onion','sweet potato'],
+			recommendations: []
 		}
 
 		this.handleChange = this.handleChange.bind(this)
@@ -12,22 +12,24 @@ class InfoTabPage extends React.Component {
 		this.produceRecommendationElement = this.produceRecommendationElement.bind(this)
 		this.produceIngredientElement = this.produceIngredientElement.bind(this)
 		this.handleDeleteIngredientInstance = this.handleDeleteIngredientInstance.bind(this)
-	
+		this.handleOnRecommendClick = this.handleOnRecommendClick.bind(this)
 	}
 
 	produceIngredientElement(ingredient,index) {
 		return (
-			<div>
+			<div key={ingredient.id}>
 			<li key={ingredient.id}>{ingredient}</li> 
-			<button onClick={() => this.handleDeleteIngredientInstance(index)}> delete </button>
+			<button onClick={() => this.handleDeleteIngredientInstance(index)} key={ingredient.id}> delete </button>
 			</div>
 			)
 	}
 
 	produceRecommendationElement(recommendation,index) {
 		return (
-			<div>
-			<li key={recommendation.id}>{recommendation}</li>
+			<div key={recommendation.id}>
+			<li key={recommendation.id}>
+				<a onClick={()=> window.open(recommendation)}> {recommendation }</a>
+			</li>
 			</div>
 			)
 	}
@@ -50,6 +52,14 @@ class InfoTabPage extends React.Component {
 	handleChange(event) {
 		this.setState({value: event.target.value})
 	}
+
+	handleOnRecommendClick(){
+		const recommendations = ['https://www.allrecipes.com/recipe/23224/microwave-pralines/']
+		this.setState((prevState) => ({
+					recommendations: [...prevState.recommendations,...recommendations]
+				}))
+	}
+
 	render() {
 		return (
 		<div>
@@ -58,7 +68,7 @@ class InfoTabPage extends React.Component {
 			<ul>
 				{this.state.ingredients.map((ingredient, index)=> this.produceIngredientElement(ingredient, index))}
 			</ul>
-			<button > Recommend me stuff </button>
+			<button onClick={() => this.handleOnRecommendClick()}> Recommend me stuff </button>
 			<ul>
 				{this.state.recommendations.map((recommendation,index) => this.produceRecommendationElement(recommendation,index))}
 			</ul>
