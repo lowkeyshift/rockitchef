@@ -1,0 +1,7 @@
+beautifulsoup4==4.6.0
+fake-useragent==0.1.11
+Jinja2==2.10
+jsondiff==1.1.2
+PyYAML==3.12
+requests==2.21.0
+virtualenv==16.4.3
