@@ -12,12 +12,6 @@ from .serializers import IngredientSerializer
 class RecipeView(viewsets.ModelViewSet):
     queryset = Recipes.objects.all()
     serializer_class = RecipeSerializer
-    def post_save(self, recipes, *args, **kwargs):
-        if type(recipes.tags) is list:
-            # If tags were provided in the request
-            saved_recipes = Recipes.objects.get(pk=recipes.pk)
-            for tag in recipes.tags:
-                saved_recipes.tags.add(tag)
 
 class ChefView(viewsets.ModelViewSet):
     queryset = Chefs.objects.all()
