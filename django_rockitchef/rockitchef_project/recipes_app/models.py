@@ -1,6 +1,7 @@
 from django.db import models
 
 from taggit.managers import TaggableManager
+from taggit.models import TaggedItemBase
 
 class TaggedFood(TaggedItemBase):
     content_object = models.ForeignKey('Recipes', on_delete=models.CASCADE)
