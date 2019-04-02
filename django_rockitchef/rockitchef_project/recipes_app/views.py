@@ -8,6 +8,7 @@ from .serializers import RecipeSerializer
 from .serializers import ChefSerializer
 from .serializers import DirectionSerializer
 from .serializers import IngredientSerializer
+from django.http import JsonResponse
 
 class RecipeView(viewsets.ModelViewSet):
     queryset = Recipes.objects.all()
@@ -17,6 +18,18 @@ class ChefView(viewsets.ModelViewSet):
     queryset = Chefs.objects.all()
     serializer_class = ChefSerializer
 
+def getChef(request):
+    arg = request.GET.get('q','')
+    response = {}
+    try:
+        chef = Chefs.objects.filter(chef_url=arg)
+        response = chef.to_json()
+    except Chefs.DoesNotExist:
+        return {}
+    finally:
+        return JsonResponse({'hello':resp})
+
+    
 class DirectionView(viewsets.ModelViewSet):
     queryset = Directions.objects.all()
     serializer_class = DirectionSerializer

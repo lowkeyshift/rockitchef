@@ -1,13 +1,15 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 
+import requests
+import json
 # Create your views here.
 
-class IngredientView(viewsets.ModelViewSet):
-    queryset = Ingredients.objects.all()
-    serializer_class = IngredientSerializer
+# class IngredientView(viewsets.ModelViewSet):
+#     queryset = Ingredients.objects.all()
+#     serializer_class = IngredientSerializer
 
-
-def StartCrawler(request):
+def StartCrawler(request, url):
     page = 0
     while True:
         # load google page, iterate across websites
@@ -21,6 +23,8 @@ def StartCrawler(request):
         page += 10
     return
 
+def helloWorld(request):
+    return HttpResponse("hello")
 
 def get_author_json(recipe_author):
     # make api call to other viewer
@@ -35,10 +39,10 @@ def addchef(recipe_author_url,recipe_author):
     recipe_author_id = 5
     return recipe_author_id
 
-def getchef():
-    pass
+def get_author_json(recipe_author):
+    requests.get('www.rockitchef.com:80/api/v1/recipes/get_chef?q={}'.format(recipe_author))
 
-def add_directions(recipe_id, json.dumps(directions)):
+def add_directions(recipe_id, directions):
     pass
     # return directions_id
 
@@ -78,7 +82,7 @@ def crawl_page(url):
     recipe_author_url = None
     #check if chef is known based on their url
     if recipe_author_exists:
-        recipe_author_id = recipe_author_exists[0]
+        recipe_author_id = recipe_author_exists['']
     else:
         try:
             recipe_author_img_element = rsoup.find('div', class_='submitter__img').find('a')

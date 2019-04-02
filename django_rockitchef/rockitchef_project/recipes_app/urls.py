@@ -9,5 +9,6 @@ router.register('directions', views.DirectionView)
 router.register('ingredients', views.IngredientView)
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path('get_chef', views.getChef)
 ]

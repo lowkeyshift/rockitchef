@@ -17,6 +17,13 @@ class Chefs(models.Model):
 
     def __str__(self):
         return self.name
+        
+    def to_json(self):
+        return {
+            'id': self.id,
+            'chef_url': self.chef_url,
+            'name': self.name
+        }
 
 class Recipes(models.Model):
     chef = models.ForeignKey(Chefs, on_delete=models.CASCADE)
