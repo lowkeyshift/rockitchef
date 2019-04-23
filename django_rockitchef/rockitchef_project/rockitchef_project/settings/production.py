@@ -25,22 +25,23 @@ SECRET_KEY = '#(a5mq+r4cvtxvm6j1^iiw@-u*!%hie!byv6=vergq#3yu&+2y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','0.0.0.0']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'taggit',
-    'recipes_app',
-    'rest_framework',
-    'taggit_serializer',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'taggit',
+    'recipes_app',
+    'rest_framework',
+    'taggit_serializer',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -73,6 +74,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'rockitchef_project.wsgi.application'
 
+# REST FRAMEWORK - Filtering
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    )
+}
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
@@ -83,7 +92,7 @@ DATABASES = {
         'USER': 'rockitmaster',
         'PASSWORD': 'Testingmybiscuits',
         'HOST': 'localhost',
-        'PORT': '',
+        'PORT': '5432',
     }
 }
 #DATABASES = {
@@ -111,6 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
 
 
 # Internationalization
