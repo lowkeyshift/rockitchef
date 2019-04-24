@@ -53,7 +53,6 @@ class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
         recipe = Recipe.objects.create(**validated_data)
 
         for ingredient in ingredients_data:
-            ingredient, created = Ingredient.objects.get_or_create(name=ingredient['item'])
-            ingredient, created = Ingredient.objects.get_or_create(name=ingredient['quantity'])
-            recipe.ingredients.add(ingredient)
+            ingredient, created = Ingredient.objects.get_or_create(item=ingredient['item'], quantity=ingredient['quantity'])
+            recipe.ingredient.add(ingredient)
         return recipe
