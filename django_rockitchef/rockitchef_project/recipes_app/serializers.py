@@ -22,26 +22,38 @@ class DirectionSerializer(serializers.ModelSerializer):
         model = Direction
         fields = '__all__'
 
-class IngredientManySerializer(serializers.DictField):
-    ingredient = serializers.CharField()
-    quantity = serializers.CharField() #ingredient = serializers.CharField(max_length=200)
-
 class IngredientSerializer(serializers.ModelSerializer):
-    ingredient = IngredientManySerializer(child=serializers.CharField())
+    #recipe = serializers.IntegerField()
+    #order = serializers.IntegerField()
+    #ingredient = serializers.CharField()
+    #quantity = serializers.CharField()
 
-    """serializers.SerializerMethodField()
-    def get_ingredient(self, obj):
-        return dict(
-            ingredient1=obj.address1, # As long as the fields are auto serializable to JSON
-            some_field=SomeSerializer(obj.some_field).data,
-        )"""
     class Meta:
         model = Ingredient
         fields = '__all__'
 
 class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
     tags = TagListSerializerField()
+    ingredient = IngredientSerializer(many=True)
 
     class Meta:
         model = Recipe
-        fields = ('chef','title', 'recipe_url', 'prep_time', 'cook_time', 'tags')
+        fields = (
+            'chef',
+            'title',
+            'recipe_url',
+            'prep_time',
+            'cook_time',
+            'tags',
+            'ingredient'
+        )
+
+    def create(self, validated_data):
+        ingredients_data = validated_data.pop('ingredient')
+        recipe = Recipe.objects.create(**validated_data)
+
+        for ingredient in ingredients_data:
+            ingredient, created = Ingredient.objects.get_or_create(name=ingredient['item'])
+            ingredient, created = Ingredient.objects.get_or_create(name=ingredient['quantity'])
+            recipe.ingredients.add(ingredient)
+        return recipe

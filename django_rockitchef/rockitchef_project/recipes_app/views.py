@@ -23,10 +23,6 @@ class DirectionView(viewsets.ModelViewSet):
     queryset = Direction.objects.all()
     serializer_class = DirectionSerializer
 
-class IngredientView(viewsets.ModelViewSet):
-    queryset = Ingredient.objects.all()
-    serializer_class = IngredientSerializer
-
 class TagsFilter(filters.CharFilter):
     def filter(self, qs, value):
         if value:

@@ -17,12 +17,20 @@ class Chef(models.Model):
     def __str__(self):
         return self.name
 
+class Ingredient(models.Model):
+    item = models.CharField(max_length=200)
+    quantity = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.item
+
 class Recipe(models.Model):
     chef = models.ForeignKey(Chef, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     recipe_url = models.URLField(max_length=500, blank=True, default='', unique=True)
     prep_time = models.CharField(max_length=10)
     cook_time = models.CharField(max_length=10)
+    ingredient = models.ManyToManyField(Ingredient)
     tags = TaggableManager(through=TaggedFood)
     # https://django-taggit.readthedocs.io/en/latest/getting_started.html
     # Explained: https://medium.com/sthzg/a-short-exploration-of-django-taggit-bb869ea5051f
@@ -33,9 +41,3 @@ class Recipe(models.Model):
 class Direction(models.Model):
     recipe = models.OneToOneField(Recipe, on_delete=models.CASCADE)
     directions_json = models.CharField(max_length=5000)
-
-
-class Ingredient(models.Model):
-    recipe = models.OneToOneField(Recipe, on_delete=models.CASCADE)
-    ingredient = models.CharField(max_length=200)
-    quantity = models.CharField(max_length=200)
