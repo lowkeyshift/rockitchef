@@ -15,7 +15,7 @@ from taggit_serializer.serializers import (TagListSerializerField,
 class ChefSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chef
-        fields = ('name', 'chef_url')
+        fields = ('id','name', 'chef_url')
 
 class DirectionSerializer(serializers.ModelSerializer):
     class Meta:
