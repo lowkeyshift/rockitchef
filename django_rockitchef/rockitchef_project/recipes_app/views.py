@@ -28,7 +28,6 @@ class TagsFilter(filters.CharFilter):
         if value:
             tags = [tag.strip() for tag in value.split(',')]
             qs = qs.filter(tags__name__in=tags).distinct()
-
         return qs
 
 class RecipeFilter(filters.FilterSet):
@@ -44,3 +43,10 @@ class RecipeView(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     filterset_class = RecipeFilter
+
+# Future use to have staff and user api access
+# to different fields
+#    def get_serializer_class(self):
+#    if self.request.user.is_staff:
+#        return FullAccountSerializer
+#    return BasicAccountSerializer

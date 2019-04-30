@@ -5,6 +5,7 @@ from .models import Ingredient
 from rest_framework import serializers
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import ParseError
+from drf_writable_nested import WritableNestedModelSerializer
 from django.http import HttpResponse, JsonResponse
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
@@ -15,26 +16,22 @@ from taggit_serializer.serializers import (TagListSerializerField,
 class ChefSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chef
-        fields = ('id','name', 'chef_url')
+        fields = ('name', 'chef_url')
 
 class DirectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Direction
         fields = '__all__'
 
-class IngredientSerializer(serializers.ModelSerializer):
-    #recipe = serializers.IntegerField()
-    #order = serializers.IntegerField()
-    #ingredient = serializers.CharField()
-    #quantity = serializers.CharField()
-
+class IngredientSerializer(WritableNestedModelSerializer):
     class Meta:
         model = Ingredient
         fields = '__all__'
 
-class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
-    tags = TagListSerializerField()
+class RecipeSerializer(WritableNestedModelSerializer, TaggitSerializer, serializers.ModelSerializer):
     ingredient = IngredientSerializer(many=True)
+
+    tags = TagListSerializerField()
 
     class Meta:
         model = Recipe
@@ -47,12 +44,3 @@ class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
             'tags',
             'ingredient'
         )
-
-    def create(self, validated_data):
-        ingredients_data = validated_data.pop('ingredient')
-        recipe = Recipe.objects.create(**validated_data)
-
-        for ingredient in ingredients_data:
-            ingredient, created = Ingredient.objects.get_or_create(item=ingredient['item'], quantity=ingredient['quantity'])
-            recipe.ingredient.add(ingredient)
-        return recipe
