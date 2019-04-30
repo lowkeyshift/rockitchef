@@ -1,31 +1,46 @@
-from .models import Recipes
-from .models import Chefs
-from .models import Directions
-from .models import Ingredients
+from .models import Recipe
+from .models import Chef
+from .models import Direction
+from .models import Ingredient
 from rest_framework import serializers
+from rest_framework.decorators import api_view
 from rest_framework.exceptions import ParseError
+from drf_writable_nested import WritableNestedModelSerializer
+from django.http import HttpResponse, JsonResponse
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
 from taggit_serializer.serializers import (TagListSerializerField,
                                            TaggitSerializer)
 
 
 class ChefSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Chefs
-        fields = ('name', 'chef_url')
-
-class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
-    tags = TagListSerializerField()
-
-    class Meta:
-        model = Recipes
-        fields = ('chef','title', 'recipe_url', 'prep_time', 'cook_time', 'tags')
+        model = Chef
+        fields = ('id','name', 'chef_url')
 
 class DirectionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Directions
-        fields = ('directions_json')
+        model = Direction
+        fields = '__all__'
 
-class IngredientSerializer(serializers.ModelSerializer):
+class IngredientSerializer(WritableNestedModelSerializer):
     class Meta:
-        model = Ingredients
-        fields = ('ingredient_qty')
+        model = Ingredient
+        fields = '__all__'
+
+class RecipeSerializer(WritableNestedModelSerializer, TaggitSerializer, serializers.ModelSerializer):
+    ingredient = IngredientSerializer(many=True)
+
+    tags = TagListSerializerField()
+
+    class Meta:
+        model = Recipe
+        fields = (
+            'chef',
+            'title',
+            'recipe_url',
+            'prep_time',
+            'cook_time',
+            'tags',
+            'ingredient'
+        )
