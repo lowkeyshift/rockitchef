@@ -36,6 +36,7 @@ class RecipeSerializer(WritableNestedModelSerializer, TaggitSerializer, serializ
     class Meta:
         model = Recipe
         fields = (
+            'id',
             'chef',
             'title',
             'recipe_url',

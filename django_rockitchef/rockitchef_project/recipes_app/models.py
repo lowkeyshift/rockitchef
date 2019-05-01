@@ -11,7 +11,7 @@ class Crawled(models.Model):
     source = models.CharField(max_length=80)
 
 class Chef(models.Model):
-    chef_url = models.URLField(max_length=500, blank=True, default='', unique=True)
+    chef_url = models.URLField(max_length=500, blank=True, default='')
     name = models.CharField(max_length=30)
 
     def __str__(self):
