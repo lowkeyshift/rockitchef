@@ -29,18 +29,20 @@ class IngredientSerializer(WritableNestedModelSerializer):
         fields = '__all__'
 
 class RecipeSerializer(WritableNestedModelSerializer, TaggitSerializer, serializers.ModelSerializer):
-    ingredient = IngredientSerializer(many=True)
-
+    ingredients = IngredientSerializer(many=True)
+    directions = DirectionSerializer(many=True)
     tags = TagListSerializerField()
 
     class Meta:
         model = Recipe
         fields = (
+            'id',
             'chef',
             'title',
             'recipe_url',
             'prep_time',
             'cook_time',
             'tags',
-            'ingredient'
+            'ingredients',
+            'directions'
         )
