@@ -46,8 +46,10 @@ def crawl_page(url):
     tags_lambda =lambda x: x and x.startswith(('toggle-similar__title'))
     tags = [x.text.replace('\n','').strip() for x in rsoup.findAll('span', class_=tags_lambda) if 'Recipe' not in x.text and 'Home' not in x.text]
 
+    directions = [{'id':1,'direction_text':direction.text.strip()} for direction in rsoup.findAll('span', class_='recipe-directions__list--item')]
+    print(directions)
     # ingredients = [(recipe_id,ingredient.text) for ingredient in rsoup.findAll('span', class_='recipe-ingred_txt added')]
-    ingredients = [{'item':'apple', 'quantity':'12 oz'}]
+    ingredients = [{'item':'apple', 'quantity':'12 oz'},{'item':'banana', 'quantity':'12 oz'}]
     recipe_payload = {
         "chef": recipe_author_id,
         "title": recipe_title,
@@ -55,11 +57,13 @@ def crawl_page(url):
         "prep_time": prep_time,
         "cook_time": cook_time,
         "tags": tags,
-        "ingredient": ingredients,
+        "ingredients": ingredients,
+        "directions": directions
     }
 
     recipe_post_resp = requests.post(base_url.format('/api/v1/recipes/recipes/'),json=recipe_payload)
-    recipe_id = recipe_post_resp.json()['id']
+    # recipe_id = recipe_post_resp.json()['id']
+    print(recipe_post_resp.text)
 
 
     directions = [direction.text for direction in rsoup.findAll('span', class_='recipe-directions__list--item')]
@@ -69,7 +73,8 @@ def crawl_page(url):
         'directions_json': json.dumps(directions)
     }
 
-    directions_post_resp = requests.post(base_url.format('/api/v1/recipes/directions'), json=directions_payload)
+    directions_post_resp = requests.post(base_url.format('/api/v1/recipes/direction'), json=directions_payload)
+    print(directions_post_resp.text)
     crawled_urls.append(url)
 
     more_urls = [(url['href']) for url in rsoup.select('a[data-internal-referrer-link="similar_recipe_banner"]')]
