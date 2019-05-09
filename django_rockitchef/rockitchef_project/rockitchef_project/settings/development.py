@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'taggit',
     'recipes_app',
     'rest_framework',
+    'rest_framework.authtoken',
     'taggit_serializer',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -73,6 +74,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'rockitchef_project.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
