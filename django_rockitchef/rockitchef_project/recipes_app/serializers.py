@@ -6,9 +6,6 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.exceptions import ParseError
 from drf_writable_nested import WritableNestedModelSerializer
-from django.http import HttpResponse, JsonResponse
-from rest_framework.renderers import JSONRenderer
-from rest_framework.parsers import JSONParser
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
