@@ -9,7 +9,7 @@ export default class Login extends Component {
                 <View style={style.logoContainer}>
                     <Image
                     style={style.logo}
-                    source={require('../assets/logo.png')}
+                    source={require('../../assets/logo.png')}
                     />
                     <Text style={style.title}>RockitChef</Text>
                 </View>
