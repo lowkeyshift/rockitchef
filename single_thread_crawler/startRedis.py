@@ -22,17 +22,13 @@ else:
     ssl._create_default_https_context = _create_unverified_https_context
 nltk.download('all')
 
-BASE_URL = 'http://127.0.0.1:8000{}'
+
+BASE_URL = 'http://rockitchef.com{}'
 RECIPE_FORMAT= 'recipes_crawled:{}'
 CHEF_FORMAT = 'chefs:{}'
 
 
-def init():
-    r = Redis(
-    #     host='hostname',
-    # port=port, 
-    # password='password'
-    )
+def init(r):
     print("collecting chefs from server")
     chefs_array = requests.get(BASE_URL.format('/api/v1/recipes/chefs/')).json()
     for chef in chefs_array:
@@ -44,7 +40,12 @@ def init():
     return Queue(connection=r)
 
 if __name__ == '__main__':
-    q = init()
+    r = Redis(
+    #     host='hostname',
+    # port=port, 
+    # password='password'
+    )
+    q = init(r)
 
     page = 0
     while True:
@@ -57,5 +58,8 @@ if __name__ == '__main__':
             time.sleep(random.random() * 5 + 10)
             url = sample.text
             print("queued up url:{}".format(url))
-            result = q.enqueue(parse_url, url)
+            if r.exists(RECIPE_FORMAT.format(url)):
+                continue
+            else:
+                result = q.enqueue(parse_url, url)
         page += 10

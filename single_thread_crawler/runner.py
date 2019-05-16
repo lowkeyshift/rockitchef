@@ -22,7 +22,7 @@ except AttributeError:
 else:
     ssl._create_default_https_context = _create_unverified_https_context
 
-BASE_URL = 'http://127.0.0.1:8000{}'
+BASE_URL = 'http://rockitchef.com{}'
 RECIPE_FORMAT= 'recipes_crawled:{}'
 CHEF_FORMAT = 'chefs:{}'
 
