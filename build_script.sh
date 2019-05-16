@@ -64,3 +64,15 @@ sudo systemctl start datadog-agent
 echo "====================================="
 echo "Starting Datadog."
 echo "====================================="
+
+echo "====================================="
+echo "Installing Redis"
+echo "====================================="
+wget http://download.redis.io/redis-stable.tar.gz
+tar xvzf redis-stable.tar.gz
+rm redis-stable.tar.gz
+cd redis-stable
+make
+echo "====================================="
+echo "Finished Installing Redis."
+echo "====================================="
