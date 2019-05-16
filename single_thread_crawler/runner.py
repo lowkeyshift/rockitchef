@@ -12,6 +12,8 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 import re
 # https://github.com/gunthercox/ChatterBot/issues/930#issuecomment-322111087
 import ssl
+import logging, sys
+logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 
 try:
     _create_unverified_https_context = ssl._create_unverified_context
@@ -84,9 +86,9 @@ def order_array(array):
 #    "1 cup flour" -> 1 cup, flour
 def process_pos(array):
   if len(array) == 1:
-    return None, array[0]
+    return None, array[0][0]
   if len(array) == 2:
-    return array[0], array[1]
+    return array[0][0], array[1][0]
   else:
     pos_pieces = order_array(array)
     cds = pos_pieces[0]['array']
@@ -107,7 +109,16 @@ def process_pos(array):
 # runs the process_pos for an array of units and converts into something the api accepts
 def process_ingredients(ingredients):
   ingredient_tokens = [nltk.pos_tag(word_tokenize(clean_text(ingredient_text))) for ingredient_text in ingredients]
-  return [{'item':process_pos(x)[1], 'quantity':process_pos(x)[0]} for x in ingredient_tokens]
+  ingredient_payload = []
+  tags = []
+  for x in ingredient_tokens:
+    quantity, item_raw = process_pos(x)
+    #account for "carrots, finely diced"
+    item_array = [x.strip() for x in item_raw.split(',')]
+    if len(item_array) > 1:
+      tags.append(item_array[1])
+    ingredient_payload.append({'item':item_array[0], 'quantity':quantity})
+  return ingredient_payload, tags
 
 ''' 
  takes a directions set:
@@ -146,12 +157,11 @@ def crawl_page(url, r):
     recipe_page = requests.get(url)
     rsoup = bs(recipe_page.text, 'html.parser')
 
-
     recipe_title_lambda =lambda x: x and x.startswith(('recipe-main'))
     try:
         recipe_title = rsoup.find('h1', id=recipe_title_lambda).text
     except:
-        print('could not find title for url: {}'.format(url))
+        logging.debug('could not find title for url: {}'.format(url))
         return
     recipe_author = rsoup.find('span', class_='submitter__name').text
 
@@ -161,9 +171,9 @@ def crawl_page(url, r):
     # insert into table if chef has not been seen before
     except (TypeError, AttributeError) as e:
         recipe_author_url = ''
-        print("could not find url to chef")
+        logging.debug("could not find url to chef")
 
-    recipe_author_id = r.exists(CHEF_FORMAT.format(recipe_author))
+    recipe_author_id =  r.get(CHEF_FORMAT.format(recipe_author)) if r.exists(CHEF_FORMAT.format(recipe_author)) else None
     if recipe_author_id is None:
         payload = {
             "name": recipe_author,
@@ -183,19 +193,20 @@ def crawl_page(url, r):
     tags = [x.text.replace('\n','').strip() for x in rsoup.findAll('span', class_=tags_lambda) if 'Recipe' not in x.text and 'Home' not in x.text]
 
     directions = process_directions([direction.text.strip() for direction in rsoup.findAll('span', class_='recipe-directions__list--item')])
-    ingredients = process_ingredients([ingredient.text for ingredient in rsoup.findAll('span', class_='recipe-ingred_txt added')])
+    ingredients, tags_extra = process_ingredients([ingredient.text for ingredient in rsoup.findAll('span', class_='recipe-ingred_txt added')])
     recipe_payload = {
         "chef": recipe_author_id,
         "title": recipe_title,
         "recipe_url": url,
         "prep_time": prep_time,
         "cook_time": cook_time,
-        "tags": tags,
+        "tags": [x.strip('"') for x in tags] + tags_extra,
         "ingredients": ingredients,
         "directions": directions
     }
 
     recipe_post_resp = requests.post(BASE_URL.format('/api/v1/recipes/recipes/'),json=recipe_payload)
+    logging.info("posted to recipes endpoint with a {} response".format(recipe_post_resp.status_code))
     r.set(RECIPE_FORMAT.format(url),'1')
     more_urls = [(url['href']) for url in rsoup.select('a[data-internal-referrer-link="similar_recipe_banner"]')]
     q = Queue(connection=r)
