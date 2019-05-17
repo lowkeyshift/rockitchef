@@ -211,7 +211,7 @@ def crawl_page(url, r):
     more_urls = [(url['href']) for url in rsoup.select('a[data-internal-referrer-link="similar_recipe_banner"]')]
     q = Queue(connection=r)
     for url_item in more_urls:
-        if r.exists(RECIPE_FORMAT.format(url_item)):
+        if not r.exists(RECIPE_FORMAT.format(url_item)):
             result = q.enqueue(parse_url, url_item)
 
 

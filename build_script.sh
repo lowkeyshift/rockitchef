@@ -68,6 +68,7 @@ echo "====================================="
 echo "====================================="
 echo "Installing Redis"
 echo "====================================="
+sudo apt-get install -y tcl, redis-server
 wget http://download.redis.io/redis-stable.tar.gz
 tar xvzf redis-stable.tar.gz
 rm redis-stable.tar.gz
