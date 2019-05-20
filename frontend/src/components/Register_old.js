@@ -9,7 +9,17 @@ export default class Login extends Component {
               barStyle="light-content"
             />
               <TextInput
-                placeholder="username or email"
+                placeholder="username"
+                placeholderTextColor='rgba(255,255,255,0.7)'
+                returnKeyType='next'
+                onSubmitEditing={() => this.emailInput.focus()}
+                keyboardType="email-address"
+                autoCapitalize='none'
+                autoCorrect={false}
+                style={styles.input}
+              />
+              <TextInput
+                placeholder="email"
                 placeholderTextColor='rgba(255,255,255,0.7)'
                 returnKeyType='next'
                 onSubmitEditing={() => this.passwordInput.focus()}
@@ -17,7 +27,7 @@ export default class Login extends Component {
                 autoCapitalize='none'
                 autoCorrect={false}
                 style={styles.input}
-
+                ref={(input) => this.emailInput = input}
               />
               <TextInput
                 placeholder="password"
@@ -29,8 +39,7 @@ export default class Login extends Component {
              />
 
              <TouchableOpacity style={styles.buttonContainer}>
-               <Text style={styles.buttonText}>LOGIN</Text>
-               <Text>REGISTER</Text>
+               <Text style={styles.buttonText}>Submit</Text>
              </TouchableOpacity>
             </View>
 
