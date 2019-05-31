@@ -2,12 +2,18 @@ from .models import Recipe
 from .models import Chef
 from .models import Direction
 from .models import Ingredient
+from .models import Profile
+from .models import Inventory
+
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.exceptions import ParseError
 from drf_writable_nested import WritableNestedModelSerializer
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+
+from taggit_serializer.serializers import (TagListSerializerField,
+                                           TaggitSerializer)
 
 class CreateUserSerializer(serializers.ModelSerializer):
     username = serializers.CharField()
@@ -26,9 +32,16 @@ class CreateUserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-from taggit_serializer.serializers import (TagListSerializerField,
-                                           TaggitSerializer)
+class InventorySerializer(WritableNestedModelSerializer):
+    class Meta:
+        model = Inventory
+        fields = '__all__'
 
+class ProfileSerializer(WritableNestedModelSerializer, serializers.ModelSerializer):
+    inventory = InventorySerializer(many=True)
+    class Meta:
+        model = Profile
+        fields = '__all__'
 
 class ChefSerializer(serializers.ModelSerializer):
     class Meta:
@@ -50,8 +63,8 @@ class RecipeSerializer(WritableNestedModelSerializer, TaggitSerializer, serializ
     directions = DirectionSerializer(many=True)
     tags = TagListSerializerField()
     ##Uncomment when react native app can successfully GET/POST from API
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    #authentication_classes = (TokenAuthentication,)
+    #permission_classes = (IsAuthenticated,)
 
     class Meta:
         model = Recipe

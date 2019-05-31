@@ -1,4 +1,4 @@
-#!/Users/edwincarrasquillo/django_rockitchef/rockitchef/bin/python3.7
+#!/Users/edwincarrasquillo/Personal_Repo/webscraper/rockitchef/django_rockitchef/rockitchef/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

@@ -40,7 +40,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/edwincarrasquillo/django_rockitchef/rockitchef"
+VIRTUAL_ENV="/Users/edwincarrasquillo/Personal_Repo/webscraper/rockitchef/django_rockitchef/rockitchef"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

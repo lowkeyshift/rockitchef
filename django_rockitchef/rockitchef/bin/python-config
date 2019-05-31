@@ -1,4 +1,4 @@
-#!/Users/edwincarrasquillo/django_rockitchef/rockitchef/bin/python
+#!/Users/edwincarrasquillo/Personal_Repo/webscraper/rockitchef/django_rockitchef/rockitchef/bin/python
 
 import sys
 import getopt

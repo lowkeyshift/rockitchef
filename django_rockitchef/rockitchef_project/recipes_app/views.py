@@ -5,7 +5,9 @@ from .models import Recipe
 from .models import Chef
 from .models import Direction
 from .models import Ingredient
+from .models import Profile
 from .serializers import RecipeSerializer
+from .serializers import ProfileSerializer
 from .serializers import ChefSerializer
 from .serializers import DirectionSerializer
 from .serializers import IngredientSerializer
@@ -38,6 +40,9 @@ class CreateUserAPIView(CreateAPIView):
             headers=headers
         )
 
+class ProfileView(viewsets.ModelViewSet):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
 
 class LogoutUserAPIView(APIView):
     queryset = get_user_model().objects.all()
