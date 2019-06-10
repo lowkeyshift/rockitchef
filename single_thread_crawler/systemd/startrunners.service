@@ -1,0 +1,12 @@
+[Unit]
+Description=Redis Service
+After=multi-user.target
+Conflicts=ziquan@miao.com
+
+[Service]
+Type=simple
+ExecStart=usr/bin/python3 /rockitchef/startRedis.py
+StandardInput=tty-force
+
+[Install]
+WantedBy=multi-user.target

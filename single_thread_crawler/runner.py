@@ -1,8 +1,6 @@
 import requests
 from redis import Redis
 from rq import Queue
-
-import requests
 from bs4 import BeautifulSoup as bs
 import random
 import json
@@ -12,15 +10,12 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 import re
 # https://github.com/gunthercox/ChatterBot/issues/930#issuecomment-322111087
 import ssl
-import logging, sys
-logging.basicConfig(stream=sys.stderr, level=logging.INFO)
+import logging
+from systemd import journal
 
-try:
-    _create_unverified_https_context = ssl._create_unverified_context
-except AttributeError:
-    pass
-else:
-    ssl._create_default_https_context = _create_unverified_https_context
+logger = logging.getLogger('runner')
+logger.addHandler(journal.JournalHandler())
+logger.setLevel(logging.DEBUG)
 
 BASE_URL = 'http://rockitchef.com{}'
 RECIPE_FORMAT= 'recipes_crawled:{}'
@@ -205,20 +200,29 @@ def crawl_page(url, r):
         "directions": directions
     }
 
-    recipe_post_resp = requests.post(BASE_URL.format('/api/v1/recipes/recipes/'),json=recipe_payload)
-    logging.info("posted to recipes endpoint with a {} response".format(recipe_post_resp.status_code))
-    r.set(RECIPE_FORMAT.format(url),'1')
+    
+    try:
+      logger.debug("trying {}", recipe_payload)
+      recipe_post_resp = requests.post(BASE_URL.format('/api/v1/recipes/recipes/'),json=recipe_payload)
+      logger.debug("posted to recipes endpoint with a {} response".format(recipe_post_resp.status_code))
+      r.set(RECIPE_FORMAT.format(url),'1')
+    except:
+      logger.debug("Unable to serialize the object", recipe_payload)
+    
     more_urls = [(url['href']) for url in rsoup.select('a[data-internal-referrer-link="similar_recipe_banner"]')]
     q = Queue(connection=r)
     for url_item in more_urls:
         if not r.exists(RECIPE_FORMAT.format(url_item)):
+            logger.debug("queued up url:{}".format(url_item))
             result = q.enqueue(parse_url, url_item)
 
 
 def parse_url(url):
     
-    #sleep randomly between 0 and 5 seconds to be nice on crawled site
-    time.sleep(random.random() * 5)
+    #sleep randomly between 30-80 seconds to be nice on crawled site
+    wait_time = random.random() * 50 + 30
+    logger.debug("waiting {} seconds to grab url {}".format(wait_time, url))
+    time.sleep(wait_time)
     r = Redis(
     #     host='hostname',
     # port=port, 
@@ -226,8 +230,8 @@ def parse_url(url):
     )
     #check if the url has been crawled already
     if r.exists(RECIPE_FORMAT.format(url)):
-        print("already crawled url: {}".format(url))
+        logger.debug("already crawled url: {}".format(url))
         return
     else:
-        print("crawling url: {}".format(url))
+        logger.debug("crawling url: {}".format(url))
         crawl_page(url, r)
