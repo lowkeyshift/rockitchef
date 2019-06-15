@@ -21,7 +21,6 @@ from recipes_app.views import CreateUserAPIView, LogoutUserAPIView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/recipes/', include('recipes_app.urls')),
-    path('', include('frontend_app.urls')),
     path('api/v1/auth/login/', views.obtain_auth_token, name='api_auth_login'),
     path('api/v1/auth/register/', CreateUserAPIView.as_view(), name='auth_user_create'),
     path('api/v1/auth/logout/', LogoutUserAPIView.as_view(), name='auth_user_logout')
