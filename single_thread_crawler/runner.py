@@ -199,7 +199,6 @@ def crawl_page(url, r):
         "ingredients": ingredients,
         "directions": directions
     }
-
     
     try:
       logger.debug("trying {}", recipe_payload)
