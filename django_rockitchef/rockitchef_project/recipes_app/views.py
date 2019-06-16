@@ -1,19 +1,56 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from rest_framework.decorators import api_view
 from django_filters import rest_framework as filters
 from .models import Recipe
 from .models import Chef
 from .models import Direction
 from .models import Ingredient
-#from .models import TaggedFood
+from .models import Profile
 from .serializers import RecipeSerializer
+from .serializers import ProfileSerializer
 from .serializers import ChefSerializer
 from .serializers import DirectionSerializer
 from .serializers import IngredientSerializer
-from django.http import HttpResponse, JsonResponse
-from rest_framework.renderers import JSONRenderer
-from rest_framework.parsers import JSONParser
+
+from django.contrib.auth import get_user_model
+from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
+from rest_framework import status
+from rest_framework.views import APIView
+from .serializers import CreateUserSerializer
+
+
+class CreateUserAPIView(CreateAPIView):
+    serializer_class = CreateUserSerializer
+    permission_classes = [AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        # We create a token than will be used for future auth
+        token = Token.objects.create(user=serializer.instance)
+        token_data = {"token": token.key}
+        return Response(
+            {**serializer.data, **token_data},
+            status=status.HTTP_201_CREATED,
+            headers=headers
+        )
+
+class ProfileView(viewsets.ModelViewSet):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+class LogoutUserAPIView(APIView):
+    queryset = get_user_model().objects.all()
+
+    def get(self, request, format=None):
+        # simply delete the token to force a login
+        request.user.auth_token.delete()
+        return Response(status=status.HTTP_200_OK)
 
 class ChefView(viewsets.ModelViewSet):
     queryset = Chef.objects.all()

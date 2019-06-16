@@ -1,7 +1,34 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase
+
+class Inventory(models.Model):
+    user_item = models.CharField(max_length=200)
+    qty = models.CharField(max_length=200)
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(max_length=500, blank=True, help_text='User bio of themselves.')
+    diet = models.CharField(max_length=100, blank=True)
+    inventory = models.ManyToManyField(Inventory, blank=True)
+    saved_recipes = models.IntegerField(blank=True, null=True)
+    subscribed_chefs = models.IntegerField(blank=True, null=True)
+    city = models.CharField(max_length=255, blank=True, null=True)
+    state = models.CharField(max_length=255, blank=True, null=True)
+    country = models.CharField(max_length=255, blank=True, null=True)
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 class TaggedFood(TaggedItemBase):
     content_object = models.ForeignKey('Recipe', on_delete=models.CASCADE)
@@ -24,7 +51,6 @@ class Ingredient(models.Model):
         return self.item
 
 class Direction(models.Model):
-    # recipe = models.OneToOneField(Recipe, on_delete=models.CASCADE)
     direction_text = models.CharField(max_length=1000, blank=True, default='')
 
     def __str__(self):
@@ -38,7 +64,7 @@ class Recipe(models.Model):
     cook_time = models.CharField(max_length=10)
     ingredients = models.ManyToManyField(Ingredient)
     directions = models.ManyToManyField(Direction)
-    tags = TaggableManager(through=TaggedFood)
+    tags = TaggableManager(through=TaggedFood, help_text="A comma-separated list of tags.")
     # https://django-taggit.readthedocs.io/en/latest/getting_started.html
     # Explained: https://medium.com/sthzg/a-short-exploration-of-django-taggit-bb869ea5051f
 
