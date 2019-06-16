@@ -11,15 +11,15 @@ class Inventory(models.Model):
     qty = models.CharField(max_length=200)
 
 class Profile(models.Model):
-    connected_user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500, blank=True, help_text='User bio of themselves.')
     diet = models.CharField(max_length=100, blank=True)
     inventory = models.ManyToManyField(Inventory, blank=True)
     saved_recipes = models.IntegerField(blank=True, null=True)
-    subscribed_chefs = models.IntegerField(blank=True)
-    city = models.CharField(max_length=255, blank=True)
-    state = models.CharField(max_length=255, blank=True)
-    country = models.CharField(max_length=255, blank=True)
+    subscribed_chefs = models.IntegerField(blank=True, null=True)
+    city = models.CharField(max_length=255, blank=True, null=True)
+    state = models.CharField(max_length=255, blank=True, null=True)
+    country = models.CharField(max_length=255, blank=True, null=True)
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
