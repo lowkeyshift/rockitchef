@@ -21,7 +21,7 @@ const instructions = Platform.select({
 type Props = {};
 export default class App extends Component<Props> {
     componentWillMount() {
-    axios.defaults.baseURL = 'http://127.0.0.1:8000/api/v1';
+    axios.defaults.baseURL = 'http://localhost:8000/api/v1/';
     axios.defaults.timeout = 1500;
   }
 

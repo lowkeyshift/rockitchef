@@ -1,0 +1,27 @@
+Original exception was:
+ Traceback (most recent call last):
+  File "/Users/edwincarrasquillo/Personal_Repo/webscraper/rockitchef/django_rockitchef/rockitchef/lib/python3.6/site-packages/rest_framework/serializers.py", line 943, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "/Users/edwincarrasquillo/Personal_Repo/webscraper/rockitchef/django_rockitchef/rockitchef/lib/python3.6/site-packages/django/db/models/manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/Users/edwincarrasquillo/Personal_Repo/webscraper/rockitchef/django_rockitchef/rockitchef/lib/python3.6/site-packages/django/db/models/query.py", line 413, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/Users/edwincarrasquillo/Personal_Repo/webscraper/rockitchef/django_rockitchef/rockitchef/lib/python3.6/site-packages/django/contrib/auth/base_user.py", line 73, in save
+    super().save(*args, **kwargs)
+  File "/Users/edwincarrasquillo/Personal_Repo/webscraper/rockitchef/django_rockitchef/rockitchef/lib/python3.6/site-packages/django/db/models/base.py", line 718, in save
+    force_update=force_update, update_fields=update_fields)
+  File "/Users/edwincarrasquillo/Personal_Repo/webscraper/rockitchef/django_rockitchef/rockitchef/lib/python3.6/site-packages/django/db/models/base.py", line 758, in save_base
+    update_fields=update_fields, raw=raw, using=using,
+  File "/Users/edwincarrasquillo/Personal_Repo/webscraper/rockitchef/django_rockitchef/rockitchef/lib/python3.6/site-packages/django/dispatch/dispatcher.py", line 175, in send
+    for receiver in self._live_receivers(sender)
+  File "/Users/edwincarrasquillo/Personal_Repo/webscraper/rockitchef/django_rockitchef/rockitchef/lib/python3.6/site-packages/django/dispatch/dispatcher.py", line 175, in <listcomp>
+    for receiver in self._live_receivers(sender)
+  File "/Users/edwincarrasquillo/Personal_Repo/webscraper/rockitchef/django_rockitchef/rockitchef_project/recipes_app/models.py", line 27, in create_user_profile
+    Profile.objects.create(user=instance)
+  File "/Users/edwincarrasquillo/Personal_Repo/webscraper/rockitchef/django_rockitchef/rockitchef/lib/python3.6/site-packages/django/db/models/manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/Users/edwincarrasquillo/Personal_Repo/webscraper/rockitchef/django_rockitchef/rockitchef/lib/python3.6/site-packages/django/db/models/query.py", line 411, in create
+    obj = self.model(**kwargs)
+  File "/Users/edwincarrasquillo/Personal_Repo/webscraper/rockitchef/django_rockitchef/rockitchef/lib/python3.6/site-packages/django/db/models/base.py", line 485, in __init__
+    raise TypeError("'%s' is an invalid keyword argument for this function" % kwarg)
+TypeError: 'user' is an invalid keyword argument for this function

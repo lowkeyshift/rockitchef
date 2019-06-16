@@ -15,7 +15,7 @@ class Profile(models.Model):
     bio = models.TextField(max_length=500, blank=True, help_text='User bio of themselves.')
     diet = models.CharField(max_length=100, blank=True)
     inventory = models.ManyToManyField(Inventory, blank=True)
-    saved_recipes = models.IntegerField(blank=True)
+    saved_recipes = models.IntegerField(blank=True, null=True)
     subscribed_chefs = models.IntegerField(blank=True)
     city = models.CharField(max_length=255, blank=True)
     state = models.CharField(max_length=255, blank=True)

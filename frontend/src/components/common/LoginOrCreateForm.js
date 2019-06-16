@@ -44,7 +44,7 @@ class LoginOrCreateForm extends Component {
     }
 
     axios
-      .post(`/auth/${endpoint}/`, payload)
+      .post(`auth/${endpoint}/`, payload)
       .then(response => {
         const { token } = response.data;
 
@@ -80,7 +80,7 @@ class LoginOrCreateForm extends Component {
               placeholder="Email"
               placeholderTextColor='rgba(255,255,255,0.7)'
               autoCorrect={false}
-              onChangeText={this.onLastNameChange.bind(this)}
+              onChangeText={this.onEmailChange.bind(this)}
               keyboardType="email-address"
               autoCapitalize='none'
               autoCorrect={false}
