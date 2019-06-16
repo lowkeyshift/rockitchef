@@ -61,22 +61,17 @@ class List extends Component {
                </TouchableOpacity>
 
                <FlatList
-
                  data={this.state.arrayHolder}
-
                  width='100%'
-
                  extraData={this.state.arrayHolder}
-
-                 keyExtractor={(index) => index.toString()}
-
+                 keyExtractor={(item, index) => `list-${index}`}
                  ItemSeparatorComponent={this.FlatListItemSeparator}
-
-                 renderItem={({ item }) => <Text style={styles.ingredient}
-                 onPress={this.GetItem.bind(this, item.title)} > {item.title} </Text>}
+                 renderItem={({item}) => 
+                    <Text style={styles.ingredient}
+                          onPress={this.GetItem.bind(this, item.title)} > 
+                      {item.title} 
+                    </Text>}
                />
-
-
              </View>
 
            );
