@@ -4,34 +4,23 @@ import { StyleSheet, FlatList, Text, View, Alert, TouchableOpacity, TextInput } 
 class List extends Component {
     constructor(props) {
 
-        super(props);
-
-        this.array = [{}],
-
-          this.state = {
-
-            arrayHolder: [],
-
-            textInput_Holder: ''
-
-          }
-
+      super(props);
+      this.state = {
+        arrayHolder: [],
+        textInput_Holder: ''
       }
-
-    componentDidMount() {
-
-        this.setState({ arrayHolder: [...this.array] })
 
     }
 
+    componentDidMount() {
+        // this.setState({ arrayHolder: [...this.array] })
+    }
+
     joinData = () => {
-
-        this.array.push({title : this.state.textInput_Holder});
-
-        this.setState({ arrayHolder: [...this.array] });
-        this.setState({
-        text: ''
-        })
+        this.setState(prevState => ({ 
+          arrayHolder: [...prevState.arrayHolder, {title: this.state.textInput_Holder}],
+          textInput_Holder: '' 
+        }));
       }
 
       FlatListItemSeparator = () => {
@@ -62,6 +51,7 @@ class List extends Component {
                  onChangeText={data => this.setState({ textInput_Holder: data })}
                  style={styles.textInputStyle}
                  underlineColorAndroid='transparent'
+                 value={this.state.textInput_Holder}
                />
 
                <TouchableOpacity onPress={this.joinData} activeOpacity={0.7} style={styles.button} >

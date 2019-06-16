@@ -23,7 +23,6 @@ class Home extends Component {
     return (
       <View style={buttonContainerStyle}>
         <Button title="Logout" onPress={this.handleRequest.bind(this)}/>
-
         <List />
       </View>
     );
