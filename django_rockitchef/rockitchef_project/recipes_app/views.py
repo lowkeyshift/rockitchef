@@ -1,16 +1,19 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from django_filters import rest_framework as filters
+
 from .models import Recipe
 from .models import Chef
 from .models import Direction
 from .models import Ingredient
 from .models import Profile
+
 from .serializers import RecipeSerializer
 from .serializers import ProfileSerializer
 from .serializers import ChefSerializer
 from .serializers import DirectionSerializer
 from .serializers import IngredientSerializer
+from .serializers import CreateUserSerializer
 
 from django.contrib.auth import get_user_model
 from rest_framework.generics import CreateAPIView
@@ -19,7 +22,7 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 from rest_framework.views import APIView
-from .serializers import CreateUserSerializer
+
 
 
 class CreateUserAPIView(CreateAPIView):

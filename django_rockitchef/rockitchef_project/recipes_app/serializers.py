@@ -7,7 +7,6 @@ from .models import Inventory
 
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from rest_framework.exceptions import ParseError
 from drf_writable_nested import WritableNestedModelSerializer
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -16,13 +15,13 @@ from taggit_serializer.serializers import (TagListSerializerField,
                                            TaggitSerializer)
 
 class CreateUserSerializer(serializers.ModelSerializer):
-    username = serializers.CharField()
+    email = serializers.CharField()
     password = serializers.CharField(write_only=True,
                                      style={'input_type': 'password'})
 
     class Meta:
         model = get_user_model()
-        fields = ('username', 'password', 'first_name', 'last_name', 'email')
+        fields = ('email', 'password')
         write_only_fields = ('password')
         read_only_fields = ('is_staff', 'is_superuser', 'is_active',)
 
@@ -35,7 +34,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
 class InventorySerializer(WritableNestedModelSerializer):
     class Meta:
         model = Inventory
-        fields = '__all__'
+        fields = '__all__' # eventually limit what can be seen
 
 class ProfileSerializer(WritableNestedModelSerializer, serializers.ModelSerializer):
     inventory = InventorySerializer(many=True)
