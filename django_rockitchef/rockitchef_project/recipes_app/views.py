@@ -26,8 +26,8 @@ from rest_framework.views import APIView
 
 
 class CreateUserAPIView(CreateAPIView):
-    serializer_class = CreateUserSerializer
-    permission_classes = [AllowAny]
+    #serializer_class = CreateUserSerializer
+    #permission_classes = [AllowAny]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -77,7 +77,7 @@ class RecipeFilter(filters.FilterSet):
 
     class Meta:
         model = Recipe
-        fields = ('title','recipe_url')
+        fields = ('title','recipe_url', 'chef', 'id', 'ingredients')
 
 class RecipeView(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()

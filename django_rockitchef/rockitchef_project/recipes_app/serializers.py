@@ -62,8 +62,8 @@ class RecipeSerializer(WritableNestedModelSerializer, TaggitSerializer, serializ
     directions = DirectionSerializer(many=True)
     tags = TagListSerializerField()
     ##Uncomment when react native app can successfully GET/POST from API
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    #authentication_classes = (TokenAuthentication,)
+    #permission_classes = (IsAuthenticated,)
 
     class Meta:
         model = Recipe
