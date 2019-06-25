@@ -1,8 +1,6 @@
 import requests
 from redis import Redis
 from rq import Queue
-
-import requests
 from bs4 import BeautifulSoup as bs
 import random
 import json
@@ -12,15 +10,10 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 import re
 # https://github.com/gunthercox/ChatterBot/issues/930#issuecomment-322111087
 import ssl
-import logging, sys
-logging.basicConfig(stream=sys.stderr, level=logging.INFO)
+import logging
 
-try:
-    _create_unverified_https_context = ssl._create_unverified_context
-except AttributeError:
-    pass
-else:
-    ssl._create_default_https_context = _create_unverified_https_context
+logger = logging.getLogger('runner')
+logger.setLevel(logging.DEBUG)
 
 BASE_URL = 'http://rockitchef.com{}'
 RECIPE_FORMAT= 'recipes_crawled:{}'
@@ -85,6 +78,8 @@ def order_array(array):
 #    "1 large egg" -> 1,     large egg
 #    "1 cup flour" -> 1 cup, flour
 def process_pos(array):
+  if len(array) == 0:
+    return None, None
   if len(array) == 1:
     return None, array[0][0]
   if len(array) == 2:
@@ -113,6 +108,8 @@ def process_ingredients(ingredients):
   tags = []
   for x in ingredient_tokens:
     quantity, item_raw = process_pos(x)
+    if item_raw is None:
+      continue
     #account for "carrots, finely diced"
     item_array = [x.strip() for x in item_raw.split(',')]
     if len(item_array) > 1:
@@ -164,6 +161,7 @@ def crawl_page(url, r):
         logging.debug('could not find title for url: {}'.format(url))
         return
     recipe_author = rsoup.find('span', class_='submitter__name').text
+    logging.debug('author: {}'.format(recipe_author))
 
     try:
         recipe_author_img_element = rsoup.find('div', class_='submitter__img').find('a')
@@ -174,14 +172,18 @@ def crawl_page(url, r):
         logging.debug("could not find url to chef")
 
     recipe_author_id =  r.get(CHEF_FORMAT.format(recipe_author)) if r.exists(CHEF_FORMAT.format(recipe_author)) else None
+    
     if recipe_author_id is None:
         payload = {
             "name": recipe_author,
             "chef_url": recipe_author_url
         }
         resp = requests.post(BASE_URL.format('/api/v1/recipes/chefs/'), json=payload)
-        r.set(CHEF_FORMAT.format(recipe_author),'1')
         recipe_author_id = resp.json()['id']
+
+        r.set(CHEF_FORMAT.format(recipe_author),'1')
+        
+    logging.debug('this author id is: {}'.format(recipe_author_id)) 
 
     prep_time_element = rsoup.select('time[itemprop="prepTime"]')
     prep_time = 0 if len(prep_time_element) == 0 else prep_time_element[0].text
@@ -204,21 +206,22 @@ def crawl_page(url, r):
         "ingredients": ingredients,
         "directions": directions
     }
-
-    recipe_post_resp = requests.post(BASE_URL.format('/api/v1/recipes/recipes/'),json=recipe_payload)
-    logging.info("posted to recipes endpoint with a {} response".format(recipe_post_resp.status_code))
-    r.set(RECIPE_FORMAT.format(url),'1')
+    try:
+      logger.debug("trying {}".format(recipe_payload))
+      recipe_post_resp = requests.post(BASE_URL.format('/api/v1/recipes/recipes/'),json=recipe_payload)
+      logger.debug("posted to recipes endpoint with a {} response".format(recipe_post_resp.status_code))
+      r.set(RECIPE_FORMAT.format(url),'1')
+    except:
+      logger.debug("Unable to serialize the object", recipe_payload)
+    
     more_urls = [(url['href']) for url in rsoup.select('a[data-internal-referrer-link="similar_recipe_banner"]')]
     q = Queue(connection=r)
     for url_item in more_urls:
         if not r.exists(RECIPE_FORMAT.format(url_item)):
+            logger.debug("queued up url:{}".format(url_item))
             result = q.enqueue(parse_url, url_item)
-
-
 def parse_url(url):
     
-    #sleep randomly between 0 and 5 seconds to be nice on crawled site
-    time.sleep(random.random() * 5)
     r = Redis(
     #     host='hostname',
     # port=port, 
@@ -226,8 +229,12 @@ def parse_url(url):
     )
     #check if the url has been crawled already
     if r.exists(RECIPE_FORMAT.format(url)):
-        print("already crawled url: {}".format(url))
+        logger.debug("already crawled url: {}".format(url))
         return
     else:
-        print("crawling url: {}".format(url))
+        #sleep randomly between 30-80 seconds to be nice on crawled site
+        wait_time = random.random() * 50 + 30
+        logger.debug("waiting {} seconds to grab url {}".format(wait_time, url))
+        time.sleep(wait_time)
+        logger.debug("crawling url: {}".format(url))
         crawl_page(url, r)
