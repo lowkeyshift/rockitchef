@@ -1,0 +1,21 @@
+version: '3.1'
+
+services:
+
+  app:
+      build:
+          context: ./AppFiles/
+      ports:
+         - "8000:8000"
+      depends_on:
+         - "db"
+      command: ["./startup.sh"]
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: recipes
+      POSTGRES_USER: rockitmaster
+      POSTGRES_PASSWORD: Testingmybiscuits
+    ports:
+        - "5432:5432"

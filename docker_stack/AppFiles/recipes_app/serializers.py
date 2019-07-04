@@ -21,7 +21,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = '__all__'
+        fields = ('email', 'password')
         write_only_fields = ('password')
         read_only_fields = ('is_staff', 'is_superuser', 'is_active',)
 
@@ -34,7 +34,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
 class InventorySerializer(WritableNestedModelSerializer):
     class Meta:
         model = Inventory
-        fields = '__all__'
+        fields = '__all__' 
 
 class ProfileSerializer(WritableNestedModelSerializer, serializers.ModelSerializer):
     inventory = InventorySerializer(many=True)
