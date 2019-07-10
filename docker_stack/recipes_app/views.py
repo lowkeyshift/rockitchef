@@ -27,7 +27,7 @@ from rest_framework.views import APIView
 
 class CreateUserAPIView(CreateAPIView):
     serializer_class = CreateUserSerializer
-    permission_classes = [AllowAny]
+    #permission_classes = [AllowAny]
     """
     post:
     Create a new user instance.

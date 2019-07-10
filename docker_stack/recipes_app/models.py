@@ -5,6 +5,7 @@ from django.contrib.auth.models import (
 
 from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase
+from django.utils import timezone
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None):
@@ -79,6 +80,7 @@ class Profile(AbstractBaseUser):
     city = models.CharField(max_length=255, blank=True, null=True)
     state = models.CharField(max_length=255, blank=True, null=True)
     country = models.CharField(max_length=255, blank=True, null=True)
+    joined_at = models.DateTimeField('Joined at', default=timezone.now)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = [] # Email & Password are required by default.

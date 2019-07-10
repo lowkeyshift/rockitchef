@@ -42,13 +42,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'taggit',
-    'recipes_app',
-    'rest_framework',
-    'taggit_serializer',
     'django_filters',
+    'taggit',
+    'taggit_serializer',
+    'rest_auth',
+    'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'recipes_app',
 ]
 
 AUTH_USER_MODEL = 'recipes_app.Profile'
@@ -76,7 +77,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -89,6 +90,8 @@ TEMPLATES = [
     },
 ]
 
+LOGIN_REDIRECT_URL = '/docs'
+
 WSGI_APPLICATION = 'rockitchef_project.wsgi.application'
 
 # REST FRAMEWORK - Filtering
@@ -100,6 +103,9 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
