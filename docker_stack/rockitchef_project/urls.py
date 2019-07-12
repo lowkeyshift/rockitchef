@@ -1,5 +1,4 @@
 """rockitchef_project URL Configuration
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.1/topics/http/urls/
 Examples:
@@ -21,11 +20,8 @@ from rest_framework.documentation import include_docs_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('accounts/profile/', views.obtain_auth_token, name='api_auth_login'),
     path('api/v1/recipes/', include('recipes_app.urls')),
     path('api/v1/auth/login/', views.obtain_auth_token, name='api_auth_login'),
     path('api/v1/auth/register/', CreateUserAPIView.as_view(), name='auth_user_create'),
     path('api/v1/auth/logout/', LogoutUserAPIView.as_view(), name='auth_user_logout'),
-    path('docs/', include_docs_urls(title='RockitChef API'))
-]
+    ]
