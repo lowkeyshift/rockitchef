@@ -4,14 +4,14 @@ import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
 import List from './List';
 import Recommendations from './Recommendations';
+import Profile from './Profile';
+
 class Home extends Component {
   constructor(props) {
-
     super(props);
     this.state = {
       page:'home'
     }
-
   }
 
   handleRequest() {
@@ -31,28 +31,45 @@ class Home extends Component {
     })
   }
   setRecommendationPage() {
+    
     this.setState({
       page:'recommendation'
     })
   }
+  setProfilePage() {
+    this.setState({
+      page:'profile'
+    })
+  }
+
   showPage() {
-    if (this.state.page == 'home'){
-      return (
-        <List />
-      )
-    } else {
-      return (
-        <Recommendations />
-      )
+    switch(this.state.page) {
+      case 'home':
+        return (
+          <List />
+        );
+      case 'recommendation':
+        return (
+          <Recommendations />
+        );
+      case 'profile':
+        return (
+          <Profile />
+        );
+      default:
+        return (
+          <Text> Hello</Text>
+        )
     }
   }
   render() {
     const { buttonContainerStyle} = styles;
     return (
       <View style={buttonContainerStyle}>
-        <Button title="Inventory" onPress={this.setHomePage.bind(this)}/>
-        <Button title="Recommendations" onPress={this.setRecommendationPage.bind(this)}/>
-        <Button title="Logout" onPress={this.handleRequest.bind(this)}/>
+        <Button title="Inventory" onPress={this.setHomePage.bind(this)} />
+        <Button title="Recommendations" onPress={this.setRecommendationPage.bind(this)} />
+        <Button title="Profile" onPress={this.setProfilePage.bind(this)} />
+        <Button title="Logout" onPress={this.handleRequest.bind(this)} />
         {this.showPage()}
       </View>
     );
