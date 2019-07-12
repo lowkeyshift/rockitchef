@@ -5,6 +5,7 @@ from django.contrib.auth.models import (
 
 from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase
+from django.utils import timezone
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None):
@@ -58,27 +59,28 @@ class Profile(AbstractBaseUser):
         unique=True,
     )
     objects = UserManager()
-    active = models.BooleanField(default=True)
-    staff = models.BooleanField(default=False) # a admin user; non super-user
-    admin = models.BooleanField(default=False) # a superuser
+    active = models.BooleanField(default=True, help_text="True/False user active/inactive")
+    staff = models.BooleanField(default=False, help_text="True/False staff account permissions") # a admin user; non super-user
+    admin = models.BooleanField(default=False, help_text="True/False admin account permissions") # a superuser
     bio = models.TextField(max_length=500, blank=True, null=True, help_text='User bio of themselves.')
-    atkins = models.BooleanField(default=False)
-    zone = models.BooleanField(default=False)
-    ketogenic = models.BooleanField(default=False)
-    vegetarian = models.BooleanField(default=False)
-    vegan = models.BooleanField(default=False)
-    weight_watchers = models.BooleanField(default=False)
-    south_beach = models.BooleanField(default=False)
-    raw = models.BooleanField(default=False)
-    mediterranean = models.BooleanField(default=False)
-    inventory = models.ManyToManyField(Inventory, blank=True)
-    saved_recipes = models.IntegerField(blank=True, null=True)
-    subscribed_chefs = models.IntegerField(blank=True, null=True)
-    first_name = models.CharField(max_length=255, blank=True, null=True)
-    last_name = models.CharField(max_length=255, blank=True, null=True)
-    city = models.CharField(max_length=255, blank=True, null=True)
-    state = models.CharField(max_length=255, blank=True, null=True)
-    country = models.CharField(max_length=255, blank=True, null=True)
+    atkins = models.BooleanField(default=False, help_text="True/False search filter diet option")
+    zone = models.BooleanField(default=False, help_text="True/False search filter diet option")
+    ketogenic = models.BooleanField(default=False, help_text="True/False search filter diet option")
+    vegetarian = models.BooleanField(default=False, help_text="True/False search filter diet option")
+    vegan = models.BooleanField(default=False, help_text="True/False search filter diet option")
+    weight_watchers = models.BooleanField(default=False, help_text="True/False search filter diet option")
+    south_beach = models.BooleanField(default=False, help_text="True/False search filter diet option")
+    raw = models.BooleanField(default=False, help_text="True/False search filter diet option")
+    mediterranean = models.BooleanField(default=False, help_text="True/False search filter diet option")
+    inventory = models.ManyToManyField(Inventory, blank=True, help_text="User's personal inventory")
+    saved_recipes = models.IntegerField(blank=True, null=True, help_text="recipes saved by pk(id)")
+    subscribed_chefs = models.IntegerField(blank=True, null=True, help_text="Chefs subscribed by pk(id)")
+    first_name = models.CharField(max_length=255, blank=True, null=True, help_text="User's first name")
+    last_name = models.CharField(max_length=255, blank=True, null=True, help_text="User's last name")
+    city = models.CharField(max_length=255, blank=True, null=True, help_text="User City in Country")
+    state = models.CharField(max_length=255, blank=True, null=True, help_text="User State in Country")
+    country = models.CharField(max_length=255, blank=True, null=True, help_text="User Country of origin")
+    joined_at = models.DateTimeField('Joined at', default=timezone.now, help_text="User registration date")
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = [] # Email & Password are required by default.
@@ -148,11 +150,11 @@ class Direction(models.Model):
 
 class Recipe(models.Model):
     chef = models.ForeignKey(Chef, on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
-    recipe_url = models.URLField(max_length=500, blank=True, default='', unique=True)
-    prep_time = models.CharField(max_length=10)
-    cook_time = models.CharField(max_length=10)
-    ingredients = models.ManyToManyField(Ingredient)
+    title = models.CharField(max_length=100, help_text="recipes title")
+    recipe_url = models.URLField(max_length=500, blank=True, default='', unique=True, help_text="unique recipe origin url")
+    prep_time = models.CharField(max_length=10, help_text="charfield preparation time 'example: 10 mins'")
+    cook_time = models.CharField(max_length=10, help_text="charfield cook time 'example: 10 mins'")
+    ingredients = models.ManyToManyField(Ingredient, help_text="List of dictionaries")
     directions = models.ManyToManyField(Direction)
     tags = TaggableManager(through=TaggedFood, help_text="A comma-separated list of tags.")
     # https://django-taggit.readthedocs.io/en/latest/getting_started.html

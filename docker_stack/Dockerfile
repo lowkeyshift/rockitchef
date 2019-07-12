@@ -2,18 +2,22 @@ FROM python:3.6.5
 
 MAINTAINER Edwin Carrasquillo ecarra7979@gmail.com
 
+# set work directory
+WORKDIR /usr/src/app
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# install psycopg2
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
-ADD . /usr/src/app/
-WORKDIR /usr/src/app
-COPY requirements.txt ./
-RUN python3 -m venv venv
+
+COPY . /usr/src/app
 RUN pip3 install --upgrade pip
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-#CMD ["./wait-for-postgres.sh"]
-EXPOSE 8000
-#CMD ["./startup.sh"]
+# run entrypoint.sh
+ENTRYPOINT ["/usr/src/app/startup.sh"]
