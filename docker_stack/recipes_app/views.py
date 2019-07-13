@@ -72,13 +72,13 @@ class ObtainAuthToken(APIView):
             status=status.HTTP_201_CREATED,
         )
 class ProfileView(viewsets.ModelViewSet):
-    #queryset = Profile.objects.all()
+    queryset = Profile.objects.all()
     model = Profile
     serializer_class = ProfileSerializer
-    permission_classes = [permissions.IsAuthenticated, ]
+    permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
-        return Profile.objects.filter(user=self.request.user)
+        return Profile.objects.filter(email=self.request.user)
 
     def pre_save(self, obj):
         obj.user = self.request.user
