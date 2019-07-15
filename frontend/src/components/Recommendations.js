@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, FlatList, Text, View, Linking} from 'react-native';
-import Axios from 'axios';
-import List from './List';
+import axios from 'axios';
 
 
 /*
@@ -50,27 +49,15 @@ class Recommendations extends Component {
     }
 
     componentDidMount() {
-        // Axios.get('http://rockitchef.com/api/v1/recipes/recipes/')
-        // .then(resp => {
-        //     let response = resp.json()
-        //     console.log(resp.data)
-        //     // this.setState({
-        //     //     arrayHolder:[resp.data]
-        //     // })
-        // })
-        // .catch(error => {
-        //     console.log(error)
-        // })
-        fetch('http://rockitchef.com/api/v1/recipes/recipes/')
-        .then(function(response) {
-            return response.json();
-          })
-        .then( data => {
-            // console.log(data[0])
-            this.setState({
-                arrayHolder:data
-            })
-        });
+        axios
+        .get(`recipes/recipes/`)
+        .then(resp => {
+            // TODO, add this to redux
+            this.setState(prevState => ({
+                arrayHolder: [...prevState.arrayHolder, ...resp.data.results]
+            }))
+        })
+        
     }
 
     FlatListItemSeparator = () => {
@@ -101,8 +88,9 @@ class Recommendations extends Component {
                 renderItem={({item}) =>
                     // <Link to={item.recipe_url}>{item.title}</Link>
                     <Text style={styles.ingredient}
-                          onPress={this.clickItem.bind(this, item.recipe_url)} >
-                        {`Written By:${item.chef}`}
+                          onPress={this.clickItem.bind(this, item.recipe_url)} > 
+                        {`Written By:${item.title}`} 
+
                     </Text>
                 }
             />
