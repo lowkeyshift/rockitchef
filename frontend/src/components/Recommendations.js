@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, FlatList, Text, View, Linking} from 'react-native';
-import Axios from 'axios';
+import axios from 'axios';
 
 /*
 example recipe response:
@@ -59,16 +59,25 @@ class Recommendations extends Component {
         // .catch(error => {
         //     console.log(error)
         // })
-        fetch('http://rockitchef.com/api/v1/recipes/recipes/')
-        .then(function(response) {
-            return response.json();
-          })
-        .then( data => {
-            // console.log(data[0])
-            this.setState({
-                arrayHolder:data
-            })
-        });
+        axios
+        .get(`recipes/recipes/`)
+        .then(resp => {
+            // TODO, add this to redux
+            console.log(resp.data)
+            this.setState(prevState => ({
+                arrayHolder: [...prevState.arrayHolder, ...resp.data.results]
+            }))
+        })
+        // fetch('http://rockitchef.com/api/v1/recipes/recipes/')
+        // .then(function(response) {
+        //     return response.json();
+        //   })
+        // .then( data => {
+        //     // console.log(data[0])
+        //     this.setState({
+        //         arrayHolder:data
+        //     })
+        // });
     }
 
     FlatListItemSeparator = () => {
@@ -88,6 +97,7 @@ class Recommendations extends Component {
        }
 
     render() {
+        console.log(this.state.arrayHolder)
         return (
             <View style={styles.MainContainer}>
             <FlatList
