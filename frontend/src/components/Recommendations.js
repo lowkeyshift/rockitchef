@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, FlatList, Text, View, Linking} from 'react-native';
-import axios from 'axios';
+import Axios from 'axios';
 
 /*
 example recipe response:
@@ -48,15 +48,27 @@ class Recommendations extends Component {
     }
 
     componentDidMount() {
-        axios
-        .get(`recipes/recipes/`)
-        .then(resp => {
-            // TODO, add this to redux
-            this.setState(prevState => ({
-                arrayHolder: [...prevState.arrayHolder, ...resp.data.results]
-            }))
-        })
-        
+        // Axios.get('http://rockitchef.com/api/v1/recipes/recipes/')
+        // .then(resp => {
+        //     let response = resp.json()
+        //     console.log(resp.data)
+        //     // this.setState({
+        //     //     arrayHolder:[resp.data]
+        //     // })
+        // })
+        // .catch(error => {
+        //     console.log(error)
+        // })
+        fetch('http://rockitchef.com/api/v1/recipes/recipes/')
+        .then(function(response) {
+            return response.json();
+          })
+        .then( data => {
+            // console.log(data[0])
+            this.setState({
+                arrayHolder:data
+            })
+        });
     }
 
     FlatListItemSeparator = () => {
@@ -88,7 +100,7 @@ class Recommendations extends Component {
                     // <Link to={item.recipe_url}>{item.title}</Link>
                     <Text style={styles.ingredient}
                           onPress={this.clickItem.bind(this, item.recipe_url)} > 
-                        {`Written By:${item.title}`} 
+                        {`Written By:${item.chef}`} 
                     </Text>
                 }
             />
