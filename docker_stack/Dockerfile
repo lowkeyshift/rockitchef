@@ -18,6 +18,4 @@ RUN apt-get update \
 COPY . /usr/src/app
 RUN pip3 install --upgrade pip
 RUN pip3 install --no-cache-dir -r requirements.txt
-
-# run entrypoint.sh
 ENTRYPOINT ["/usr/src/app/startup.sh"]

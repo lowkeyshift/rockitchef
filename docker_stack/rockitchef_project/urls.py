@@ -25,4 +25,4 @@ urlpatterns = [
     path('api/v1/auth/register/', CreateUserAPIView.as_view(), name='auth_user_create'),
     path('api/v1/auth/logout/', LogoutUserAPIView.as_view(), name='auth_user_logout'),
     path('docs/', include_docs_urls(title='Rockitchef API')),
-    ]
+]

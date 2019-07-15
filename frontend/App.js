@@ -10,6 +10,7 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import Router from './src/Router';
 import axios from 'axios';
+import List from './List';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -21,7 +22,7 @@ const instructions = Platform.select({
 type Props = {};
 export default class App extends Component<Props> {
     componentWillMount() {
-    axios.defaults.baseURL = 'http://localhost:8000/api/v1/';
+    axios.defaults.baseURL = 'http://localhost:1337/api/v1/';
     axios.defaults.timeout = 1500;
   }
 

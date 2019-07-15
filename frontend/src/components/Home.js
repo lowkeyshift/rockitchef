@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, Button, StyleSheet } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
-import List from './List';
 import Recommendations from './Recommendations';
 class Home extends Component {
   constructor(props) {

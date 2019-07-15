@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, FlatList, Text, View, Linking} from 'react-native';
 import Axios from 'axios';
+import List from './List';
+
 
 /*
 example recipe response:
@@ -96,11 +98,11 @@ class Recommendations extends Component {
                 extraData={this.state.arrayHolder}
                 keyExtractor={(item, index) => `list-${index}`}
                 ItemSeparatorComponent={this.FlatListItemSeparator}
-                renderItem={({item}) => 
+                renderItem={({item}) =>
                     // <Link to={item.recipe_url}>{item.title}</Link>
                     <Text style={styles.ingredient}
-                          onPress={this.clickItem.bind(this, item.recipe_url)} > 
-                        {`Written By:${item.chef}`} 
+                          onPress={this.clickItem.bind(this, item.recipe_url)} >
+                        {`Written By:${item.chef}`}
                     </Text>
                 }
             />

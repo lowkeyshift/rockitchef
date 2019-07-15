@@ -83,7 +83,26 @@ class ProfileSerializer(WritableNestedModelSerializer, serializers.ModelSerializ
     inventory = InventorySerializer(many=True)
     class Meta:
         model = Profile
-        fields = '__all__'
+        fields = (
+            'bio',
+            'atkins',
+            'zone',
+            'ketogenic',
+            'vegetarian',
+            'vegan',
+            'weight_watchers',
+            'south_beach',
+            'raw',
+            'mediterranean',
+            'inventory',
+            'saved_recipes',
+            'subscribed_chefs',
+            'first_name',
+            'last_name',
+            'city',
+            'state',
+            'country',
+        )
 
 class ChefSerializer(serializers.ModelSerializer):
     class Meta:
