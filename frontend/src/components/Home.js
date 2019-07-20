@@ -6,6 +6,10 @@ import List from './List';
 import Recommendations from './Recommendations';
 import Profile from './Profile';
 
+
+import { BottomNavigation } from 'react-native-material-ui';
+
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -14,33 +18,6 @@ class Home extends Component {
     }
   }
 
-  handleRequest() {
-    // This request will only succeed if the Authorization header
-    // contains the API token
-    axios
-      .get('/auth/logout/')
-      .then(response => {
-        delete axios.defaults.headers.common.Authorization
-        Actions.auth()
-      })
-      .catch(error =>  console.log(error));
-  }
-  setHomePage() {
-    this.setState({
-      page:'home'
-    })
-  }
-  setRecommendationPage() {
-    
-    this.setState({
-      page:'recommendation'
-    })
-  }
-  setProfilePage() {
-    this.setState({
-      page:'profile'
-    })
-  }
 
   showPage() {
     switch(this.state.page) {
@@ -66,11 +43,27 @@ class Home extends Component {
     const { buttonContainerStyle} = styles;
     return (
       <View style={buttonContainerStyle}>
-        <Button title="Inventory" onPress={this.setHomePage.bind(this)} />
-        <Button title="Recommendations" onPress={this.setRecommendationPage.bind(this)} />
-        <Button title="Profile" onPress={this.setProfilePage.bind(this)} />
-        <Button title="Logout" onPress={this.handleRequest.bind(this)} />
         {this.showPage()}
+        <BottomNavigation active={this.state.active} hidden={false} >
+          <BottomNavigation.Action
+              key="home"
+              icon="hearing"
+              label="home"
+              onPress={() => this.setState({ page: 'home' })}
+          />
+          <BottomNavigation.Action
+              key="recommendation"
+              icon="accessible"
+              label="recommendation"
+              onPress={() => this.setState({ page: 'recommendation' })}
+          />
+          <BottomNavigation.Action
+              key="profile"
+              icon="group"
+              label="profile"
+              onPress={() => this.setState({ page: 'profile' })}
+          />
+      </BottomNavigation>
       </View>
     );
   }

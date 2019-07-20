@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { StyleSheet, FlatList, Text, View, Linking} from 'react-native';
 import axios from 'axios';
 
+import { ListItem, Card } from 'react-native-material-ui';
+import { Icon } from 'react-native-elements';
+
 /*
 example recipe response:
 {
@@ -75,6 +78,10 @@ class Recommendations extends Component {
         Linking.openURL(item)
        }
 
+    generateRightListElement = () => {
+        return (<Icon
+        name='rowing' />)
+    }
     render() {
         return (
             <View style={styles.MainContainer}>
@@ -85,11 +92,17 @@ class Recommendations extends Component {
                 keyExtractor={(item, index) => `list-${index}`}
                 ItemSeparatorComponent={this.FlatListItemSeparator}
                 renderItem={({item}) => 
-                    // <Link to={item.recipe_url}>{item.title}</Link>
-                    <Text style={styles.ingredient}
-                          onPress={this.clickItem.bind(this, item.recipe_url)} > 
-                        {`Written By:${item.title}`} 
-                    </Text>
+                    <Card>
+                        <ListItem
+                            divider
+                            centerElement={{
+                            primaryText: `Make ${item.title} in ${item.cook_time}`,
+                            }}
+                            onPress={this.clickItem.bind(this, item.recipe_url)}
+                            rightElement = {(<Icon name="rowing" />)}
+                            // rightElement = {this.generateRightListElement.bind(this, item)}
+                        />
+                    </Card>
                 }
             />
             </View>

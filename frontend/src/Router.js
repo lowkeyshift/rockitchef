@@ -21,11 +21,13 @@ const RouterComponent = () => {
             key="login"
             component={Login}
             initial
+            hideNavBar={true}
           />
           <Scene
             title="Register"
             key="register"
             component={Register}
+            hideNavBar={true}
           />
         </Stack>
         <Stack
@@ -35,10 +37,11 @@ const RouterComponent = () => {
           titleStyle={style.titleStyle}
         >
           <Scene
-            title="Home"
+            // title="Home"
             key="home"
             component={Home}
             initial
+            // hideNavBar={true}
           />
         </Stack>
       </Stack>

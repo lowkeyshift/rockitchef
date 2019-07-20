@@ -13,6 +13,7 @@ class Profile extends Component {
 
     }
 
+    
     componentDidMount() {
         axios
         .get(`recipes/users/2/`)
@@ -35,12 +36,25 @@ class Profile extends Component {
         // });
     }
 
+    handleRequest() {
+      // This request will only succeed if the Authorization header
+      // contains the API token
+      axios
+        .get('/auth/logout/')
+        .then(response => {
+          delete axios.defaults.headers.common.Authorization
+          Actions.auth()
+        })
+        .catch(error =>  console.log(error));
+    }
+
     render() {
         const user = this.state.user
         // console.log(this.state.user)
         return user ? (
             
             <View style={styles.MainContainer}>
+                <Button title="Logout" onPress={this.handleRequest.bind(this)} /> 
                 <Text>First Name: {user.first_name || `N/A`}</Text>
                 <Text>Last Name: {user.last_name || `N/A`}</Text>
                 {/* {email ? <Text>`Email: ${}`.format(email)`</Text> } */}
