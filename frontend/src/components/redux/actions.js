@@ -24,7 +24,10 @@ export const error = error => ({
     error,
 });
 
-
+export const ADD_INVENTORY_ITEM = item => dispatch({
+    type: 'ADD_INVENTORY_ITEM',
+    itemName: item
+})
 
 export const getUserToken = () => dispatch =>
 
