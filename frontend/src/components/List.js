@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { StyleSheet, FlatList, Text, View, Alert, TouchableOpacity, TextInput } from 'react-native';
+import { connect } from 'react-redux'
+import Inventory from './InventoryItems'
+import {ADD_INVENTORY_ITEM} from './redux/actions'
 
-class List extends Component {
+import AddInventoryItem from './AddInventoryItem'
+class Inventory_List extends Component {
     constructor(props) {
 
       super(props);
       this.state = {
-        arrayHolder: [],
         textInput_Holder: ''
       }
 
@@ -17,11 +20,9 @@ class List extends Component {
     }
 
     joinData = () => {
-        this.setState(prevState => ({ 
-          arrayHolder: [...prevState.arrayHolder, {title: this.state.textInput_Holder}],
-          textInput_Holder: '' 
-        }));
-      }
+        // redux
+        this.props.onAddInventoryItem(this.state.textInput_Holder)
+    }
 
       FlatListItemSeparator = () => {
           return (
@@ -37,9 +38,9 @@ class List extends Component {
 
     GetItem(item) {
 
-         Alert.alert(item);
+      Alert.alert(item);
 
-       }
+    }
 
        render() {
            return (
@@ -59,11 +60,12 @@ class List extends Component {
                  <Text style={styles.buttonText}> Add Ingredients </Text>
 
                </TouchableOpacity>
-
-               <FlatList
-                 data={this.state.arrayHolder}
+              {/* <AddInventoryItem /> */}
+              <Inventory />
+               {/* <FlatList
+                 data={this.props.inventory_items}
                  width='100%'
-                 extraData={this.state.arrayHolder}
+                 extraData={this.props.inventory_items}
                  keyExtractor={(item, index) => `list-${index}`}
                  ItemSeparatorComponent={this.FlatListItemSeparator}
                  renderItem={({item}) => 
@@ -71,7 +73,8 @@ class List extends Component {
                           onPress={this.GetItem.bind(this, item.title)} > 
                       {item.title} 
                     </Text>}
-               />
+               /> */}
+               {/* <Text>Hellooo</Text> */}
              </View>
 
            );
@@ -123,4 +126,16 @@ const styles = StyleSheet.create({
 
 });
 
+const mapDispatchToProps = dispatch => {
+  return {
+    onAddInventoryItem: itemName => {
+      dispatch(ADD_INVENTORY_ITEM(itemName))
+    }
+  }
+}
+
+const List = connect(
+  null,
+  mapDispatchToProps
+)(Inventory_List)
 export default List;

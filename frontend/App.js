@@ -11,6 +11,12 @@ import {Platform, StyleSheet, Text, View} from 'react-native';
 import Router from './src/Router';
 import axios from 'axios';
 
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+import { rootReducer } from './src/components/redux/reducers'
+
+const store = createStore(rootReducer)
+
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
   android:
@@ -27,7 +33,10 @@ export default class App extends Component<Props> {
 
   render() {
     return (
-      <Router />
+      <Provider store={store} >
+        <Router />
+      </Provider>
+      
     );
   }
 }
