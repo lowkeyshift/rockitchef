@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, FlatList, Text, View, Linking } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import axios from "axios";
 import { Button } from "react-native-material-ui";
 
@@ -14,7 +14,6 @@ class Profile extends Component {
   componentDidMount() {
     axios.get(`recipes/users/2/`).then(resp => {
       // TODO, add this to redux
-      console.log(resp.data);
       this.setState({
         user: resp.data
       });
@@ -45,13 +44,11 @@ class Profile extends Component {
 
   render() {
     const user = this.state.user;
-    // console.log(this.state.user)
     return user ? (
       <View style={styles.MainContainer}>
         <Button primary text="Logout" onPress={this.handleRequest.bind(this)} />
         <Text>First Name: {user.first_name || `N/A`}</Text>
         <Text>Last Name: {user.last_name || `N/A`}</Text>
-        {/* {email ? <Text>`Email: ${}`.format(email)`</Text> } */}
         <Text>Email : {user.email}</Text>
         <Text>Bio: {user.bio || `N/A`}</Text>
         <Text>City: {user.city || `N/A`}</Text>

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, FlatList, Text, View, Linking } from "react-native";
 import axios from "axios";
-
 import { ListItem, Card } from "react-native-material-ui";
 import { Icon } from "react-native-elements";
 

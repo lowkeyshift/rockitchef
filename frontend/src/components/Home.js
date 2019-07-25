@@ -1,11 +1,8 @@
 import React, { Component } from "react";
-import { View, Button, StyleSheet } from "react-native";
-import { Actions } from "react-native-router-flux";
-import axios from "axios";
+import { View, StyleSheet } from "react-native";
 import List from "./inventory/List";
 import VisibleRecommendations from "./recommendations/VisibleRecommendations";
 import Profile from "./profile/Profile";
-
 import { BottomNavigation } from "react-native-material-ui";
 
 class Home extends Component {
