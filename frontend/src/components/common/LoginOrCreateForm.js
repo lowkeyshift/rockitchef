@@ -18,7 +18,8 @@ class LoginOrCreateForm extends Component {
     password: "",
     firstName: "",
     lastName: "",
-    email: ""
+    email: "",
+    error: null
   };
 
   onUsernameChange(text) {
@@ -65,7 +66,10 @@ class LoginOrCreateForm extends Component {
         // Navigate to the home screen
         Actions.main();
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        console.log(error);
+        this.setState({ error });
+      });
   }
 
   renderCreateForm() {
@@ -167,6 +171,7 @@ class LoginOrCreateForm extends Component {
               onChangeText={this.onPasswordChange.bind(this)}
               style={textInputStyle}
             />
+            {this.state.error && <Text>Error Logging in, Try Again</Text>}
           </View>
           {this.renderCreateForm()}
         </View>
