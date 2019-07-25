@@ -3,7 +3,8 @@ export const rootReducer = (
     token: {},
     loading: true,
     error: null,
-    inventory_items: ["apples", "bananas", "bourbon"]
+    recommendations: [],
+    inventory_items: ["apples"]
   },
   action
 ) => {
@@ -24,6 +25,13 @@ export const rootReducer = (
         ...state,
         inventory_items: [...state.inventory_items, action.itemName]
       };
+
+    case "ADD_RECOMMENDATIONS":
+      return {
+        ...state,
+        recommendations: action.recommendations
+      };
+
     default:
       return state;
   }

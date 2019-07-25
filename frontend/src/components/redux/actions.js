@@ -29,6 +29,11 @@ export const ADD_INVENTORY_ITEM = item => ({
   itemName: item
 });
 
+export const ADD_RECOMMENDATIONS = item => ({
+  type: "ADD_RECOMMENDATIONS",
+  recommendations: item
+});
+
 export const getUserToken = () => dispatch =>
   AsyncStorage.getItem("userToken")
     .then(data => {
