@@ -1,18 +1,17 @@
 import { connect } from "react-redux";
 import Recommendations from "./Recommendations";
-import { ADD_RECOMMENDATIONS } from "../redux/actions";
+import { ADD_PROFILE } from "../redux/actions";
 
 const mapStateToProps = state => {
   return {
-    inventory_items: state.RecommendationReducer.inventory_items,
-    recommendations: state.RecommendationReducer.recommendations
+    profile: state.ProfileReducer.profile
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onAddRecommendations: recommendations => {
-      dispatch(ADD_RECOMMENDATIONS(recommendations));
+      dispatch(ADD_PROFILE(recommendations));
     }
   };
 };

@@ -9,11 +9,20 @@ import {
   TextInput
 } from "react-native";
 import { connect } from "react-redux";
-import { Card } from "react-native-material-ui";
+import { Card, ListItem } from "react-native-material-ui";
+import { Icon } from "react-native-elements";
 
 const itemRenderer = ({ item }) => (
   <Card>
-    <Text>{item}</Text>
+    <ListItem
+      divider
+      centerElement={{
+        primaryText: `${item}`
+      }}
+      // onPress={this.clickItem.bind(this, item.recipe_url)}
+      rightElement={<Icon name="rowing" />}
+      // rightElement = {this.generateRightListElement.bind(this, item)}
+    />
   </Card>
 );
 
@@ -55,7 +64,7 @@ const InventoryItems = ({ inventory_items }) => {
 
 const mapStateToProps = state => {
   return {
-    inventory_items: state.inventory_items
+    inventory_items: state.InventoryReducer.inventory_items
   };
 };
 
