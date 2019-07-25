@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { View, Button, StyleSheet } from "react-native";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
-import List from "./List";
-import VisibleRecommendations from "./VisibleRecommendations";
-import Profile from "./Profile";
+import List from "./inventory/List";
+import VisibleRecommendations from "./recommendations/VisibleRecommendations";
+import Profile from "./profile/Profile";
 
 import { BottomNavigation } from "react-native-material-ui";
 

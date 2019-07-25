@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import Recommendations from "./Recommendations";
-import { ADD_RECOMMENDATIONS } from "./redux/actions";
+import { ADD_RECOMMENDATIONS } from "../redux/actions";
 
 const mapStateToProps = state => {
   return {

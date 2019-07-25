@@ -12,7 +12,7 @@ import {
   Input,
   Button
 } from "react-native";
-import { ADD_INVENTORY_ITEM } from "./redux/actions";
+import { ADD_INVENTORY_ITEM } from "../redux/actions";
 
 let AddInventoryItem = ({ dispatch }) => {
   let input = "Hello";
