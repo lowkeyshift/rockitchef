@@ -1,26 +1,12 @@
-import { combineReducers } from 'redux';
-
-const rootReducer = (state = {
-    token: {},
-    loading: true,
-    error: null,
-}, action) => {
-    switch (action.type) {
-        case 'GET_TOKEN':
-            return { ...state, token: action.token };
-        case 'SAVE_TOKEN':
-            return { ...state, token: action.token };
-        case 'REMOVE_TOKEN':
-            return { ...state, token: action.token };
-        case 'LOADING':
-            return { ...state, loading: action.isLoading };
-        case 'ERROR':
-            return { ...state, error: action.error };
-        default:
-            return state;
-    }
-};
+import { combineReducers } from "redux";
+import { AuthReducer } from "./reducers/AuthReducer.js";
+import { ProfileReducer } from "./reducers/ProfileReducer.js";
+import { RecommendationReducer } from "./reducers/RecommendationReducer.js";
+import { InventoryReducer } from "./reducers/InventoryReducer.js";
 
 export default combineReducers({
-    token: rootReducer
+  AuthReducer,
+  ProfileReducer,
+  RecommendationReducer,
+  InventoryReducer
 });

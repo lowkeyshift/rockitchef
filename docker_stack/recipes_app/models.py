@@ -53,11 +53,17 @@ class Inventory(models.Model):
     qty = models.CharField(max_length=200)
 
 class Profile(AbstractBaseUser):
+
+    username = None
     email = models.EmailField(
         verbose_name='email address',
         max_length=255,
         unique=True,
     )
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = [] # Email & Password are required by default.
+
     objects = UserManager()
     active = models.BooleanField(default=True, help_text="True/False user active/inactive")
     staff = models.BooleanField(default=False, help_text="True/False staff account permissions") # a admin user; non super-user
@@ -81,9 +87,6 @@ class Profile(AbstractBaseUser):
     state = models.CharField(max_length=255, blank=True, null=True, help_text="User State in Country")
     country = models.CharField(max_length=255, blank=True, null=True, help_text="User Country of origin")
     joined_at = models.DateTimeField('Joined at', default=timezone.now, help_text="User registration date")
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = [] # Email & Password are required by default.
 
     def get_full_name(self):
         # The user is identified by their email address
