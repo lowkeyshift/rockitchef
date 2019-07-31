@@ -14,8 +14,18 @@ RUN apt-get update \
         postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
+# Copying over application files ##
+COPY recipes_app /usr/src/app
+COPY rockitchef_project /usr/src/app
+COPY staticfiles /usr/src/app
+COPY manage.py /usr/src/app
+COPY startup.sh /usr/src/app
+COPY requirements.txt /usr/src/app
 
-COPY . /usr/src/app
+# Installing dependancies
 RUN pip3 install --upgrade pip
 RUN pip3 install --no-cache-dir -r requirements.txt
+
+# Running startup script to start django app
+# & create admin user
 ENTRYPOINT ["/usr/src/app/startup.sh"]
