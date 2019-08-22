@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="gr__getmdl_io mdl-js">
+
+    <head>
+        <meta charset="utf-8">
+        <title>RockitChef</title>
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue_grey-orange.min.css" />
+        <style>
+            .top-gap {
+                margin-top: 80px;
+                align-center:
+                white-space: nowrap;
+                }
+            .full-width {
+                width: 100%;
+            }
+            th.column-title{
+                text-align: center;
+            }
+        </style>
+    </head>
+<body>
+{% include "admin_page/navigation.html" %}
+<div class="mdl-grid mdl-cell--12-col">
+<main class="mdl-layout__content top-gap full-width">
+<table id="recipe-table-id" class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp full-width">
+  <thead>
+    <tr class="row-info" data-value="all">
+      <th class="mdl-data-table__cell--non-numeric column-title">Recipe</th>
+      <th class="column-title">Chef</th>
+      <th class="column-title">Origin</th>
+      <th> </th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+{% for recipe in recipes %}
+
+    <tr class="row-info" data-value="one-more-value">
+      <td class="mdl-data-table__cell--non-numeric">{{ recipe.title|capfirst }}</td>
+      <td>{{ recipe.chef|capfirst }}</td>
+      <td><a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="{{ recipe.recipe_url }}">
+        {{ recipe.recipe_url }}
+          </a>
+     </td>
+     <td>    <!-- Button w/ Accent-colored raised button with ripple -->
+           <a href="{% url 'edit_recipe' pk=recipe.pk %}?full_path={{ request.get_full_path }}">
+               <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Edit
+               </button>
+           </a>
+     </td>
+     <td><!-- Button w/ Accent-colored raised button with ripple -->
+         <form action="{% url 'delete_recipe' pk=recipe.pk %}" method="POST">
+           {% csrf_token %}
+           <input id="full_path" name="full_path" type="hidden" value="{{ request.get_full_path }}">
+           <input class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--accent" type="submit" value="Delete"/>
+         </form>
+     </td>
+{% endfor %}
+    </tr>
+  </tbody>
+</table>
+    </main>
+ </div>
+<!-- Simple list -->
+{% include "admin_page/pagination.html" %}
+
+<footer class="mdl-mini-footer">
+    <div class="mdl-mini-footer__left-section">
+        <div class="mdl-logo">RockitChef.LLC</div><br>
+        <div class="mdl-logo">
+            <p>Copyright &copy; {% now "Y" %}
+                All Rights Reserved.</p>
+        </div>
+    </div>
+    <div class="mdl-mini-footer__right-section">
+        <ul class="mdl-mini-footer__link-list">
+            <li><a href="#">Help</a></li>
+            <li><a href="#">Privacy & Terms</a></li>
+        </ul>
+    </div>
+</footer>
+
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    </body>
+</html>
