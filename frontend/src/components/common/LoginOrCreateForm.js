@@ -44,7 +44,7 @@ class LoginOrCreateForm extends Component {
   handleRequest() {
     const endpoint = this.props.create ? "register" : "login";
     const payload = {
-      username: this.state.username,
+      email: this.state.username,
       password: this.state.password
     };
 

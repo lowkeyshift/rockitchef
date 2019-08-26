@@ -116,9 +116,6 @@ const mapDispatchToProps = dispatch => {
   return {
     onAddInventoryItem: itemName => {
       dispatch(ADD_INVENTORY_ITEM(itemName));
-    },
-    onDeleteInventoryItem: itemName => {
-      dispatch(DELETE_INVENTORY_ITEM(itemName));
     }
   };
 };

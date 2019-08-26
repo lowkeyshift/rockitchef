@@ -1,30 +1,9 @@
 import React from "react";
-import {
-  StyleSheet,
-  FlatList,
-  Text,
-  View,
-  Alert,
-  TouchableOpacity,
-  TextInput
-} from "react-native";
+import { StyleSheet, FlatList, View } from "react-native";
 import { connect } from "react-redux";
 import { Card, ListItem } from "react-native-material-ui";
 import { Icon } from "react-native-elements";
-
-const itemRenderer = ({ item }) => (
-  <Card>
-    <ListItem
-      divider
-      centerElement={{
-        primaryText: `${item}`
-      }}
-      // onPress={this.clickItem.bind(this, item.recipe_url)}
-      rightElement={<Icon name="rowing" />}
-      // rightElement = {this.generateRightListElement.bind(this, item)}
-    />
-  </Card>
-);
+import { DELETE_INVENTORY_ITEM } from "../redux/actions";
 
 const styles = StyleSheet.create({
   buttonText: {
@@ -33,7 +12,28 @@ const styles = StyleSheet.create({
   }
 });
 
-const InventoryItems = ({ inventory_items }) => {
+const InventoryItems = ({ inventory_items, onDeleteInventoryItem }) => {
+  const itemRenderer = ({ item }) => (
+    <Card>
+      <ListItem
+        divider
+        centerElement={{
+          primaryText: `${item}`
+        }}
+        // onPress={this.clickItem.bind(this, item.recipe_url)}
+        rightElement={
+          <Icon
+            onPress={() => {
+              onDeleteInventoryItem(item);
+            }}
+            name="delete"
+          />
+        }
+        // rightElement = {this.generateRightListElement.bind(this, item)}
+      />
+    </Card>
+  );
+
   const FlatListItemSeparator = () => {
     return (
       <View
@@ -44,10 +44,6 @@ const InventoryItems = ({ inventory_items }) => {
         }}
       />
     );
-  };
-
-  const GetItem = item => {
-    Alert.alert(item);
   };
 
   return (
@@ -68,9 +64,17 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    onDeleteInventoryItem: itemName => {
+      dispatch(DELETE_INVENTORY_ITEM(itemName));
+    }
+  };
+};
+
 const Inventory = connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(InventoryItems);
 
 export default Inventory;
