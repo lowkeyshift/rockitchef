@@ -29,6 +29,11 @@ export const ADD_INVENTORY_ITEM = item => ({
   itemName: item
 });
 
+export const DELETE_INVENTORY_ITEM = item => ({
+  type: "DELETE_INVENTORY_ITEM",
+  itemName: item
+});
+
 export const ADD_RECOMMENDATIONS = item => ({
   type: "ADD_RECOMMENDATIONS",
   recommendations: item

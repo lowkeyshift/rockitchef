@@ -10,9 +10,8 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import Inventory from "./InventoryItems";
-import { ADD_INVENTORY_ITEM } from "../redux/actions";
+import { ADD_INVENTORY_ITEM, DELETE_INVENTORY_ITEM } from "../redux/actions";
 
-import AddInventoryItem from "./AddInventoryItem";
 class Inventory_List extends Component {
   constructor(props) {
     super(props);
@@ -28,6 +27,10 @@ class Inventory_List extends Component {
   joinData = () => {
     // redux
     this.props.onAddInventoryItem(this.state.textInput_Holder);
+  };
+
+  deleteData = itemName => {
+    this.props.onDeleteInventoryItem(itemName);
   };
 
   FlatListItemSeparator = () => {
@@ -64,21 +67,7 @@ class Inventory_List extends Component {
         >
           <Text style={styles.buttonText}> Add Ingredients </Text>
         </TouchableOpacity>
-        {/* <AddInventoryItem /> */}
         <Inventory />
-        {/* <FlatList
-                 data={this.props.inventory_items}
-                 width='100%'
-                 extraData={this.props.inventory_items}
-                 keyExtractor={(item, index) => `list-${index}`}
-                 ItemSeparatorComponent={this.FlatListItemSeparator}
-                 renderItem={({item}) => 
-                    <Text style={styles.ingredient}
-                          onPress={this.GetItem.bind(this, item.title)} > 
-                      {item.title} 
-                    </Text>}
-               /> */}
-        {/* <Text>Hellooo</Text> */}
       </View>
     );
   }
