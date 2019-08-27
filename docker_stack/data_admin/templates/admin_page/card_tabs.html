@@ -1,0 +1,41 @@
+<!-- tabs with links -->
+<div class = "mdl-tabs mdl-js-tabs">
+   <div class = "mdl-tabs__tab-bar">
+      <a href = "#ingredients" class = "mdl-tabs__tab is-active">Ingredients</a>
+      <a href = "#directions" class = "mdl-tabs__tab">Directions</a>
+      <a href = "#tags" class = "mdl-tabs__tab">Tags</a>
+   </div>
+
+   <div class = "mdl-tabs__panel is-active" id = "ingredients">
+       <ul>
+            {% for ingredient in recipe.ingredients.all %}
+                {% if ingredient.quantity|length <= 0 %}
+                <li>{{ ingredient.item|capfirst }} | [Amount Missing]</li><br />
+                {% elif ingredient.item|length <= 0 %}
+                    <li>[Ingredient Missing] | Amount: {{ ingredient.quantity }}</li><br />
+                {% elif ingredient.item == ":" %}
+                    <li>[Ingredient Missing] | Amount: {{ ingredient.quantity }}</li><br />
+                {% else %}
+                <li>{{ ingredient.item|capfirst }} | Amount: {{ ingredient.quantity }}</li><br />
+                {% endif %}
+            {% endfor %}
+        </ul>
+   </div>
+
+   <div class = "mdl-tabs__panel" id = "directions">
+       <ol>
+           {% for direction in recipe.directions.all %}
+               <li>{{ direction.direction_text }}</li><br />
+           {% endfor %}
+       </ol>
+   </div>
+
+   <div class = "mdl-tabs__panel" id = "tags">
+       <ul>
+           {% for tag in recipe.tags.all %}
+               <li>{{ tag }}</li><br />
+           {% endfor %}
+       </ul>
+   </div>
+</div>
+ <!-- tabs with links -->

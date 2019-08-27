@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'recipes_app',
+    'data_admin',
 ]
 
 AUTH_USER_MODEL = 'recipes_app.Profile'
@@ -171,5 +172,9 @@ USE_TZ = True
 #STATICFILES_DIRS = [
 #    os.path.join(BASE_DIR, "static"),
 #]
-STATIC_URL = '/staticfiles/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = (
+  os.path.join(BASE_DIR, 'static'),
+  '/usr/src/app/static/dashboard',
+)

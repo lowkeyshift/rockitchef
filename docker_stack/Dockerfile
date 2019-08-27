@@ -17,7 +17,7 @@ RUN apt-get update \
 # Copying over application files ##
 COPY recipes_app /usr/src/app
 COPY rockitchef_project /usr/src/app
-COPY staticfiles /usr/src/app
+COPY static /usr/src/app
 COPY manage.py /usr/src/app
 COPY startup.sh /usr/src/app
 COPY requirements.txt /usr/src/app

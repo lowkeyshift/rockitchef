@@ -1,0 +1,17 @@
+<div class="pagination">
+ {% if recipes.has_previous %}
+ <button class="mdl-button mdl-button--accent">
+     <a href="?page={{ recipes.previous_page_number }}">previous</a>
+ </button>
+ {% endif %}
+
+ {% if recipes.has_next %}
+ <button class="mdl-button mdl-button--accent">
+     <a href="?page={{ recipes.next_page_number }}">next</a>
+ </button>
+ {% endif %}
+
+ <span class="current">
+     Page {{ recipes.number }} of {{ recipes.paginator.num_pages }}.
+ </span>
+</div>

@@ -49,7 +49,7 @@ class UserManager(BaseUserManager):
         return user
 
 class Inventory(models.Model):
-    user_item = models.CharField(max_length=200)
+    inventory = models.CharField(max_length=200)
     qty = models.CharField(max_length=200)
 
 class Profile(AbstractBaseUser):
